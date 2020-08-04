@@ -1,18 +1,50 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {User, Product} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
   const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'})
+    User.create({
+      email: 'cody@email.com',
+      password: '123456',
+      firstName: 'Cody',
+      lastName: 'Davidson'
+    }),
+    User.create({
+      email: 'murphy@email.com',
+      password: '123456',
+      firstName: 'Eddie',
+      lastName: 'Murphy'
+    })
+  ])
+
+  const products = await Promise.all([
+    Product.create({
+      name: 'Cotton Facemask',
+      price: 4.94,
+      quantity: 55,
+      category: 'mask',
+      description:
+        'Facemask Cotton Face Mask With Filter Pocket PM2.5 Filter 2 Layer Washable Face Mask Reusable Mask'
+    }),
+    Product.create({
+      name: 'Rainbow Sun Shield',
+      price: 16.99,
+      quantity: 15,
+      category: 'face-shield',
+      description:
+        'Sun visor UV Protection, Hat Cap, Rainbow Visor, Sun cap, Face Shield',
+      imageUrl:
+        'https://i.etsystatic.com/18717999/r/il/c67c2d/2487349479/il_794xN.2487349479_qr23.jpg'
+    })
   ])
 
   console.log(`seeded ${users.length} users`)
+  console.log(`seeding ${products.length} products successfully`)
   console.log(`seeded successfully`)
 }
 

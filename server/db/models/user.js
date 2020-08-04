@@ -30,7 +30,7 @@ const User = db.define('user', {
     // Making `.password` act like a func hides it when serializing to JSON.
     // This is a hack to get around Sequelize's lack of a "private" option.
     validate: {
-      len: [6,100]
+      len: [6, 100]
     },
     get() {
       return () => this.getDataValue('password')
@@ -54,7 +54,8 @@ const User = db.define('user', {
     type: Sequelize.INTEGER
   },
   isAdmin: {
-    type: Sequelize.BOOLEAN
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   }
 })
 
@@ -63,18 +64,18 @@ module.exports = User
 /**
  * instanceMethods
  */
-User.prototype.correctPassword = function (candidatePwd) {
+User.prototype.correctPassword = function(candidatePwd) {
   return User.encryptPassword(candidatePwd, this.salt()) === this.password()
 }
 
 /**
  * classMethods
  */
-User.generateSalt = function () {
+User.generateSalt = function() {
   return crypto.randomBytes(16).toString('base64')
 }
 
-User.encryptPassword = function (plainText, salt) {
+User.encryptPassword = function(plainText, salt) {
   return crypto
     .createHash('RSA-SHA256')
     .update(plainText)
