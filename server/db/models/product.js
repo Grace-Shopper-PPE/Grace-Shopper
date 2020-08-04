@@ -36,7 +36,7 @@ const Product = db.define('product', {
     type: Sequelize.ENUM('XS', 'S', 'M', 'L', 'XL')
   },
   category: {
-    type: Sequelize.ENUM('mask', 'sanitizer', 'face-shield')
+    type: Sequelize.ENUM('mask', 'sanitizer', 'face-shield', 'goggles', 'gloves')
   },
   quantity: {
     type: Sequelize.INTEGER,
