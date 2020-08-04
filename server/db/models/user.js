@@ -30,7 +30,7 @@ const User = db.define('user', {
     // Making `.password` act like a func hides it when serializing to JSON.
     // This is a hack to get around Sequelize's lack of a "private" option.
     validate: {
-      min: 10
+      len: [6,100]
     },
     get() {
       return () => this.getDataValue('password')
@@ -47,20 +47,14 @@ const User = db.define('user', {
   googleId: {
     type: Sequelize.STRING
   },
-  Address: {
+  address: {
     type: Sequelize.STRING
   },
-  Account: {
-    type: Sequelize.INTEGER,
-    unique: true,
-    allowNull: false
-  },
-  PhoneNumber: {
+  phoneNumber: {
     type: Sequelize.INTEGER
   },
-  orderHistory: {
-    // for now until we figure out the non-array solution
-    type: Sequelize.ARRAY
+  isAdmin: {
+    type: Sequelize.BOOLEAN
   }
 })
 
