@@ -9,9 +9,9 @@ const App = () => {
     <div>
       <Navbar />
       <Routes />
-      <Button variant="primary" size="lg">
+      {/* <Button variant="primary" size="lg">
         Large Button
-      </Button>
+      </Button> */}
     </div>
   )
 }
