@@ -19,7 +19,7 @@ router.get('/', async (req, res, next) => {
 router.get('/:userid', async (req, res, next) => {
   try {
     const id = req.params.userid
-    const user = await User.findByPK(id)
+    const user = await User.findByPk(id)
     if (user) {
       res.json(user)
     } else {
