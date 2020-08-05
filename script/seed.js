@@ -40,6 +40,17 @@ async function seed() {
         'Sun visor UV Protection, Hat Cap, Rainbow Visor, Sun cap, Face Shield',
       imageUrl:
         'https://i.etsystatic.com/18717999/r/il/c67c2d/2487349479/il_794xN.2487349479_qr23.jpg'
+    }),
+    Product.create({
+      name: 'Ladybug Faceshield',
+      price: 19.5,
+      quantity: 40,
+      category: 'face-shield',
+      color: 'red',
+      description:
+        'Clear Face Shield with Printed Designs for Kids and Adults. Comfortable PPE that can be used with goggles & facemask if needed',
+      imageUrl:
+        'https://i.etsystatic.com/22957671/r/il/9d0aec/2449990780/il_794xN.2449990780_3re3.jpg'
     })
   ])
 
