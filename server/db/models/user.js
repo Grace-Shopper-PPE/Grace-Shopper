@@ -64,13 +64,20 @@ module.exports = User
 /**
  * instanceMethods
  */
+// this one salt the password - adding salt in front of the plain text so that the encrypted pw will never be the same even if the plain text pw from multiple users are the same
 User.prototype.correctPassword = function(candidatePwd) {
   return User.encryptPassword(candidatePwd, this.salt()) === this.password()
 }
 
+// User.prototype.changed = function (candidatePwd) {
+//   if (candidatePwd === this.password) return false
+//   else return true;
+// }
+
 /**
  * classMethods
  */
+// this generates a salt string that has a 16 length and base of 64
 User.generateSalt = function() {
   return crypto.randomBytes(16).toString('base64')
 }
@@ -86,6 +93,7 @@ User.encryptPassword = function(plainText, salt) {
 /**
  * hooks
  */
+// user.changed('password') seems like a method we need to create
 const setSaltAndPassword = user => {
   if (user.changed('password')) {
     user.salt = User.generateSalt()
