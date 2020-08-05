@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchUsers} from '../store/all-users'
+import UserDetail from './user-detail'
 
 /**
  * COMPONENT
@@ -18,10 +19,10 @@ export class AllUsers extends Component {
         <h3>All Users</h3>
         {users && users.length
           ? users.map(user => {
-              const {id, firstName, lastName, email} = user
+              const {id} = user
               return (
-                <ul key={id}>
-                  {firstName} {lastName} {email}
+                <ul>
+                  <UserDetail key={id} user={user} />
                 </ul>
               )
             })
@@ -30,7 +31,6 @@ export class AllUsers extends Component {
     )
   }
 }
-
 /**
  * CONTAINER
  */
