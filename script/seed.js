@@ -25,7 +25,7 @@ async function seed() {
   const products = await Promise.all([
     Product.create({
       name: 'Cotton Facemask',
-      price: 4.94,
+      price: 494,
       quantity: 55,
       category: 'mask',
       description:
@@ -33,7 +33,7 @@ async function seed() {
     }),
     Product.create({
       name: 'Rainbow Sun Shield',
-      price: 16.99,
+      price: 1699,
       quantity: 15,
       category: 'face-shield',
       description:
@@ -43,7 +43,7 @@ async function seed() {
     }),
     Product.create({
       name: 'Ladybug Faceshield',
-      price: 19.5,
+      price: 1950,
       quantity: 40,
       category: 'face-shield',
       color: 'red',
