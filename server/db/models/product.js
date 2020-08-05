@@ -59,4 +59,8 @@ const Product = db.define('product', {
   }
 })
 
+// Product.prototype.getPrice = function () {
+//   this.price = this.price/100
+// }
+
 module.exports = Product
