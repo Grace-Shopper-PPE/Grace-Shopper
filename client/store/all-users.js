@@ -24,7 +24,7 @@ export const fetchUsers = () => async dispatch => {
 /**
  * REDUCER
  */
-const allUsers = function(state = [], action) {
+export default = function(state = [], action) {
   switch (action.type) {
     case GET_USERS:
       return action.users
@@ -32,5 +32,3 @@ const allUsers = function(state = [], action) {
       return state
   }
 }
-
-export default allUsers
