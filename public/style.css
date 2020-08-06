@@ -19,3 +19,10 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+.warning {
+  padding: 0 0.5em;
+  background-color: orange;
+  color: white;
+  margin-left: 1em;
+}
