@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchSingleUser} from '../store/single-user'
+import {fetchSingleUser} from '../store'
 
 /**
  * COMPONENT
@@ -12,27 +12,17 @@ export class SingleUser extends Component {
   }
 
   render() {
-    const {
-      id,
-      firstName,
-      lastName,
-      email,
-      address,
-      phoneNumber,
-      isAdmin
-    } = this.props.user
+    const {firstName, lastName, email, address, phoneNumber} = this.props.user
 
     return (
       <div>
         <h3>Single User Profile</h3>
-        {id}
         <p>
           {firstName} {lastName}
         </p>
         <p>{email}</p>
         <p>{address}</p>
         <p>{phoneNumber}</p>
-        <p>{isAdmin}</p>
       </div>
     )
   }
@@ -41,7 +31,7 @@ export class SingleUser extends Component {
  * CONTAINER
  */
 const mapState = state => {
-  return {user: state.user}
+  return {user: state.currentUser}
 }
 const mapDispatch = dispatch => {
   return {

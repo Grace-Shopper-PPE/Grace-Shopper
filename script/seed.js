@@ -12,13 +12,18 @@ async function seed() {
       email: 'cody@email.com',
       password: '123456',
       firstName: 'Cody',
-      lastName: 'Davidson'
+      lastName: 'Davidson',
+      phoneNumber: '(402)773-5461',
+      address: '810 W Cedar St, Sutton, NE, 68979',
+      isAdmin: true
     }),
     User.create({
       email: 'murphy@email.com',
       password: '123456',
       firstName: 'Eddie',
-      lastName: 'Murphy'
+      lastName: 'Murphy',
+      phoneNumber: '(718)945-0832',
+      address: '6952 Hillmeyer Ave, Arverne, NY, 11692'
     })
   ])
 
