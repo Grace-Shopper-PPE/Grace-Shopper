@@ -6,12 +6,12 @@ import Button from 'react-bootstrap/Button'
  * COMPONENT
  */
 const SingleProductDetail = props => {
-  const {name, price, imageUrl} = props.product
+  const {id, name, price, imageUrl} = props.product
   const newPrice = (price / 100).toFixed(2)
-  console.log(props.product)
-  return (
+  const productUrl = `/products/${id}`
 
-    <div className="m-3">
+  return (
+    <div className="m-3" href={productUrl}>
       <Card style={{width: '18rem'}}>
         <Card.Img variant="top" src={imageUrl} />
         <Card.Body>
@@ -20,12 +20,6 @@ const SingleProductDetail = props => {
           <Button variant="primary">Add To Cart</Button>
         </Card.Body>
       </Card>
-
-    <div>
-      <p>{name}</p>
-      <p>${newPrice}</p>
-      <img src={imageUrl} alt={name} />
-
     </div>
   )
 }
