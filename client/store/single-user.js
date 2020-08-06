@@ -23,9 +23,9 @@ const removeUser = () => ({type: REMOVE_USER})
  */
 
 // getting another single user profile
-export const fetchSingleUser = () => async dispatch => {
+export const fetchSingleUser = id => async dispatch => {
   try {
-    const {data} = await axios.get('/api/users/:userid')
+    const {data} = await axios.get(`/api/users/${id}`)
     dispatch(getUser(data))
   } catch (err) {
     console.log(err)
