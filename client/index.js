@@ -6,6 +6,8 @@ import history from './history'
 import store from './store'
 import App from './app'
 
+import '../public/App.scss'
+
 // establishes socket connection
 import './socket'
 

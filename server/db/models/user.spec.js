@@ -9,6 +9,34 @@ describe('User model', () => {
     return db.sync({force: true})
   })
 
+  describe('Validations', () => {
+    it('firstName, lastName and email are not null', async () => {
+      const user1 = User.build({lastName: 'Dog', email: 'cody@dog.com'})
+      const user2 = User.build({firstName: 'Cody', email: 'cody@dog.com'})
+      const user3 = User.build({firstName: 'Cody', lastName: 'Dog'})
+      try {
+        await user1.validate()
+        await user2.validate()
+        await user3.validate()
+        throw Error('validation was successful but field is missing')
+      } catch (err) {
+        expect(err.message).to.contain('notNull Violation')
+      }
+    })
+  })
+
+  it('`email` contains a valid email address', async () => {
+    const user = User.build({firstName: 'Cody', lastName: 'Dog', email: 'pug'})
+    try {
+      await user.validate()
+      throw Error(
+        'validation was successful but the email address is not valid'
+      )
+    } catch (err) {
+      expect(err.message).to.contain('Validation isEmail on email failed')
+    }
+  })
+
   describe('instanceMethods', () => {
     describe('correctPassword', () => {
       let cody
