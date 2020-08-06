@@ -11,7 +11,8 @@ import {
   AllFaceshields,
   AllSanitizers,
   AllUsers,
-  SingleUser
+  SingleUser,
+  SingleProductPage
 } from './components'
 import {me} from './store'
 
@@ -35,9 +36,8 @@ class Routes extends Component {
         <Route exact path="/products/masks" component={AllMasks} />
         <Route exact path="/products/faceshields" component={AllFaceshields} />
         <Route exact path="/products/sanitizers" component={AllSanitizers} />
+        <Route exact path="/products/:id" component={SingleProductPage} />
         <Route exact path="/users" component={AllUsers} />
-
-
 
         <Route
           exact
