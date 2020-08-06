@@ -32,12 +32,11 @@ class Routes extends Component {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route exact path="/products" component={AllProducts} />
-        <Route path="/users" component={AllUsers} />
         <Route exact path="/products/masks" component={AllMasks} />
         <Route exact path="/products/faceshields" component={AllFaceshields} />
         <Route exact path="/products/sanitizers" component={AllSanitizers} />
         <Route exact path="/users" component={AllUsers} />
-        <Route exact path="/users/:userid" component={SingleUser} />
+        <Route exact path="/users/:id" component={SingleUser} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}

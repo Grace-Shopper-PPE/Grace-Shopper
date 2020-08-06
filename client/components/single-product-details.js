@@ -5,11 +5,12 @@ import React from 'react'
  */
 const SingleProductDetail = props => {
   const {name, price, imageUrl} = props.product
-  const newPrice = (price / 100).toFixed(2)
+  // const newPrice = (price / 100).toFixed(2)
+  console.log(props.product)
   return (
     <div>
       <p>{name}</p>
-      <p>${newPrice}</p>
+      <p>${price}</p>
       <img src={imageUrl} alt={name} />
     </div>
   )
