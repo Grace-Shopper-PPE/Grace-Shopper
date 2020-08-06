@@ -9,6 +9,7 @@ const SingleProductDetail = props => {
   const {name, price, imageUrl} = props.product
   const newPrice = (price / 100).toFixed(2)
   return (
+
     <div className="m-3">
       <Card style={{width: '18rem'}}>
         <Card.Img variant="top" src={imageUrl} />
@@ -18,6 +19,12 @@ const SingleProductDetail = props => {
           <Button variant="primary">Add To Cart</Button>
         </Card.Body>
       </Card>
+
+    <div>
+      <p>{name}</p>
+      <p>${newPrice}</p>
+      <img src={imageUrl} alt={name} />
+
     </div>
   )
 }
