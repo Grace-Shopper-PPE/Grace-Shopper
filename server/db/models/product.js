@@ -59,8 +59,11 @@ const Product = db.define('product', {
   }
 })
 
-// Product.prototype.getPrice = function () {
-//   this.price = this.price/100
+// Product.prototype.normalizePrice = function () {
+//   this.map((product) => {
+//     product.price = product.price/100
+//     return product
+//   })
 // }
 
 module.exports = Product
