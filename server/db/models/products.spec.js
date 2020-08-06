@@ -1,35 +1,73 @@
-// /* global describe beforeEach it */
+/* global describe beforeEach it */
 
-// We don't seem to need this for now
+const {expect} = require('chai')
+const db = require('../index')
+const Product = db.model('product')
 
-// const {expect} = require('chai')
-// const db = require('../index')
-// const Product= db.model('product')
+describe('Product Model', () => {
+  beforeEach(() => {
+    return db.sync({force: true})
+  })
 
-// describe('Product model', () => {
-//   beforeEach(() => {
-//     return db.sync({force: true})
-//   })
+  describe('Validations', () => {
+    it('requires a `name`', async () => {
+      const product = Product.build({price: 1000})
+      try {
+        await product.validate()
+        throw Error(
+          'validation was successful but should have failed without `name`'
+        )
+      } catch (err) {
+        expect(err.message).to.contain('name cannot be null')
+      }
+    })
 
-//   describe('Product Model', () => {
+    it('requires a `price`', async () => {
+      const product = Product.build({name: 'Green mask'})
+      try {
+        await product.validate()
+        throw Error(
+          'validation was successful but should have failed without `price`'
+        )
+      } catch (err) {
+        expect(err.message).to.contain('price cannot be null')
+      }
+    })
 
-//       let mask
+    it('name cannot be an empty string', async () => {
+      const product = Product.build({name: '', price: 10000})
+      try {
+        await product.validate()
+        throw Error(
+          'validation was successful but should have failed while name value is an empty string'
+        )
+      } catch (err) {
+        expect(err.message).to.contain('Validation error')
+      }
+    })
 
-//       beforeEach(async () => {
-//         cody = await User.create({
-//             name : 'N95 Mask',
-//             price: 10
+    it('requires a `price`', async () => {
+      const product = Product.build({name: 'Green mask'})
+      try {
+        await product.validate()
+        throw Error(
+          'validation was successful but should have failed without `price`'
+        )
+      } catch (err) {
+        expect(err.message).to.contain('price cannot be null')
+      }
+    })
 
-//         })
-//       })
-
-//       it('', () => {
-//         expect(cody.correctPassword('bones1243')).to.be.equal(true)
-//       })
-
-//       it('New product appears as ', () => {
-//         expect(cody.correctPassword('bonez')).to.be.equal(false)
-
-//     }) // end describe('correctPassword')
-//   }) // end describe('instanceMethods')
-// }) // end describe('User model')
+    it('price is greater than or equal to 1', async () => {
+      const product = Product.build({price: 0})
+      try {
+        await product.validate()
+        throw Error(
+          'validation was successful but should have failed without `price`'
+        )
+      } catch (err) {
+        expect(err.message).to.contain('Validation error')
+      }
+    })
+  })
+})

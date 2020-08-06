@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button'
 const SingleProductDetail = props => {
   const {name, price, imageUrl} = props.product
   const newPrice = (price / 100).toFixed(2)
+  console.log(props.product)
   return (
 
     <div className="m-3">
