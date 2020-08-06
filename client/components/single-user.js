@@ -7,7 +7,8 @@ import {fetchSingleUser} from '../store/single-user'
  */
 export class SingleUser extends Component {
   componentDidMount() {
-    this.props.loadSingleUser()
+    const id = this.props.match.params.userid
+    this.props.loadSingleUser(id)
   }
 
   render() {
@@ -19,7 +20,7 @@ export class SingleUser extends Component {
       address,
       phoneNumber,
       isAdmin
-    } = this.props
+    } = this.props.user
 
     return (
       <div>
@@ -44,7 +45,7 @@ const mapState = state => {
 }
 const mapDispatch = dispatch => {
   return {
-    loadSingleUser: () => dispatch(fetchSingleUser())
+    loadSingleUser: id => dispatch(fetchSingleUser(id))
   }
 }
 

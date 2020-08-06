@@ -21,8 +21,8 @@ export class AllUsers extends Component {
           ? users.map(user => {
               const {id} = user
               return (
-                <ul>
-                  <UserDetail key={id} user={user} />
+                <ul key={id}>
+                  <UserDetail user={user} />
                 </ul>
               )
             })
