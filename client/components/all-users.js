@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchUsers} from '../store/all-users'
+import {fetchUsers} from '../store/users'
 import UserDetail from './user-detail'
 
 /**
@@ -12,21 +12,23 @@ export class AllUsers extends Component {
   }
 
   render() {
-    const {users} = this.props
+    const {users, currentUser} = this.props
 
     return (
       <div>
         <h3>All Users</h3>
-        {users && users.length
-          ? users.map(user => {
-              const {id} = user
-              return (
-                <ul key={id}>
-                  <UserDetail user={user} />
-                </ul>
-              )
-            })
-          : 'No User'}
+        {!currentUser.isAdmin
+          ? `Sorry you don't have authorization to view user information`
+          : !users && !users.length
+            ? `No users`
+            : users.map(user => {
+                const {id} = user
+                return (
+                  <ul key={id}>
+                    <UserDetail user={user} />
+                  </ul>
+                )
+              })}
       </div>
     )
   }
@@ -35,7 +37,10 @@ export class AllUsers extends Component {
  * CONTAINER
  */
 const mapState = state => {
-  return {users: state.users}
+  return {
+    users: state.users,
+    currentUser: state.currentUser
+  }
 }
 const mapDispatch = dispatch => {
   return {
