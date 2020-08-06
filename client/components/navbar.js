@@ -43,7 +43,7 @@ const Navbar = ({handleClick, isLoggedIn}) => (
             </NavItem>
             <Nav className="justify-content-end">
               <NavItem>
-                <NavLink href="/home">Profile</NavLink>
+                <NavLink href="/profile">Profile</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="#" onClick={handleClick}>
@@ -56,13 +56,37 @@ const Navbar = ({handleClick, isLoggedIn}) => (
       ) : (
         <div>
           {/* The navbar will show these links before you log in */}
-          <Link to="/home">Home</Link>
-          <Link to="/products">All Products</Link>
-          <Link to="/products/masks">Masks</Link>
-          <Link to="/products/faceshields">Face Shields</Link>
-          <Link to="/products/sanitizers">Sanitizers</Link>
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
+          <Nav variant="tabs" activeKey="/home">
+            <NavItem>
+              <NavLink href="/home">Home</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink eventKey="link-1" href="/products">
+                All Products
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink eventKey="link-2" href="/products/masks">
+                Masks
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink eventKey="link-3" href="/products/faceshields">
+                Face Shields
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink eventKey="link-4" href="/products/sanitizers">
+                Sanitizers
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/login">Login</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/signup">Sign Up</NavLink>
+            </NavItem>
+          </Nav>
         </div>
       )}
     </nav>
