@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import {SingleUser} from './single-user'
 
 /**
  * COMPONENT
@@ -10,6 +11,7 @@ const UserDetail = function(props) {
 
   return (
     <div>
+
       <Link to={`/users/${id}`}>
         <span>
           {firstName} {lastName}
