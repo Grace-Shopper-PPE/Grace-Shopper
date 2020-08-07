@@ -21,17 +21,15 @@ const removeUser = () => ({type: REMOVE_USER})
 /**
  * THUNK CREATORS
  */
-
-// getting another single user profile
 export const fetchSingleUser = id => async dispatch => {
   try {
     const {data} = await axios.get(`/api/users/${id}`)
     dispatch(getUser(data))
   } catch (err) {
-    console.log(err)
+    console.log(`Retrieving user: ${id} unsuccesful`, err)
   }
 }
-// getting my own profile
+
 export const me = () => async dispatch => {
   try {
     const res = await axios.get('/auth/me')

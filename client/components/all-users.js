@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchUsers} from '../store/all-users'
+import {fetchUsers, removeUser} from '../store/users'
 import UserDetail from './user-detail'
 
 /**
@@ -8,25 +8,37 @@ import UserDetail from './user-detail'
  */
 export class AllUsers extends Component {
   componentDidMount() {
-    this.props.loadUsers()
+    this.props.fetchUsers()
+    this.removeUserCallback = this.removeUserCallback.bind(this)
+  }
+
+  removeUserCallback(event) {
+    const {removeUser, currentUser} = this.props
+    removeUser(currentUser.id)
   }
 
   render() {
-    const {users} = this.props
+    const {users, currentUser} = this.props
+    const authorized = currentUser && currentUser.isAdmin
+    if (!authorized)
+      return (
+        <div>Sorry you don't have authorization to view user information</div>
+      )
 
     return (
       <div>
         <h3>All Users</h3>
-        {users && users.length
-          ? users.map(user => {
-              const {id} = user
-              return (
-                <ul key={id}>
-                  <UserDetail user={user} />
-                </ul>
-              )
-            })
-          : 'No User'}
+        {users.map(user => {
+          const {id} = user
+          return (
+            <ul key={id}>
+              <UserDetail user={user} />
+              <button type="submit" onClick={this.removeUserCallback}>
+                Remove
+              </button>
+            </ul>
+          )
+        })}
       </div>
     )
   }
@@ -34,13 +46,7 @@ export class AllUsers extends Component {
 /**
  * CONTAINER
  */
-const mapState = state => {
-  return {users: state.users}
-}
-const mapDispatch = dispatch => {
-  return {
-    loadUsers: () => dispatch(fetchUsers())
-  }
-}
+const mapState = ({users, currentUser}) => ({users, currentUser})
+const mapDispatch = {removeUser, fetchUsers}
 
 export default connect(mapState, mapDispatch)(AllUsers)
