@@ -1,17 +1,29 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {fetchCart} from '../store/cart'
+import {fetchCart, incrementQuantity} from '../store/cart'
 import CartProductDetail from './cart-product-details'
 import CardDeck from 'react-bootstrap/CardDeck'
-import Col from 'react-bootstrap/Col'
-import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
 
 /**
  * COMPONENT
  */
 export class Cart extends React.Component {
+  constructor() {
+    super()
+    this.increment = this.increment.bind(this)
+  }
+
   componentDidMount() {
+    this.props.loadCart()
+  }
+
+  async increment(orderId, productId) {
+    const productToIncrement = {
+      orderId,
+      productId
+    }
+    await this.props.add(productToIncrement)
     this.props.loadCart()
   }
 
@@ -28,6 +40,7 @@ export class Cart extends React.Component {
                     <CartProductDetail
                       key={product.productId}
                       product={product}
+                      increment={this.increment}
                     />
                   ))
                 : `Your cart is currently empty`}
@@ -44,7 +57,8 @@ const mapState = state => ({
 })
 
 const mapDispatch = dispatch => ({
-  loadCart: () => dispatch(fetchCart())
+  loadCart: () => dispatch(fetchCart()),
+  add: item => dispatch(incrementQuantity(item))
 })
 
 export default connect(mapState, mapDispatch)(Cart)

@@ -9,7 +9,7 @@ import Container from 'react-bootstrap/Container'
  * COMPONENT
  */
 const CartProductDetail = props => {
-  const {product, quantity} = props.product
+  const {product, quantity, orderId, productId} = props.product
   const newPrice = (product.price / 100).toFixed(2)
 
   return (
@@ -31,7 +31,12 @@ const CartProductDetail = props => {
                       <div className="align-self-center mx-2">
                         <Card.Text>Quantity: {quantity}</Card.Text>
                       </div>
-                      <Button variant="primary">+</Button>
+                      <Button
+                        onClick={() => props.increment(orderId, productId)}
+                        variant="primary"
+                      >
+                        +
+                      </Button>
                     </Row>
 
                     <Button variant="primary">Remove</Button>

@@ -33,7 +33,7 @@ const incrementCart = cart => ({type: INCREMENT_CART, cart})
 
 export const incrementQuantity = item => async dispatch => {
   try {
-    const {data} = await axios.post('/api/cart', item)
+    const {data} = await axios.put('/api/cart', item)
     dispatch(incrementCart(data))
   } catch (error) {
     console.error(error)
@@ -44,8 +44,8 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case GET_CART:
       return action.cart
-    case ADD_TO_CART:
-      return
+    case INCREMENT_CART:
+      return action.cart
     default:
       return state
   }
