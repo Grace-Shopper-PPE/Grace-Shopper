@@ -19,23 +19,26 @@ export class AllUsers extends Component {
 
   render() {
     const {users, currentUser} = this.props
+    const authorized = currentUser && currentUser.isAdmin
+    if (!authorized)
+      return (
+        <div>Sorry you don't have authorization to view user information</div>
+      )
 
     return (
       <div>
         <h3>All Users</h3>
-        {currentUser.isAdmin
-          ? users.map(user => {
-              const {id} = user
-              return (
-                <ul key={id}>
-                  <UserDetail user={user} />
-                  <button type="submit" onClick={this.removeUserCallback}>
-                    Remove
-                  </button>
-                </ul>
-              )
-            })
-          : `Sorry you don't have authorization to view user information`}
+        {users.map(user => {
+          const {id} = user
+          return (
+            <ul key={id}>
+              <UserDetail user={user} />
+              <button type="submit" onClick={this.removeUserCallback}>
+                Remove
+              </button>
+            </ul>
+          )
+        })}
       </div>
     )
   }

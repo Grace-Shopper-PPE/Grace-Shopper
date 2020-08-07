@@ -9,7 +9,6 @@ router.param('id', async (req, res, next, id) => {
     const user = await User.findByPk(id)
     if (!user) res.sendStatus(404)
     req.requestedUser = user
-    console.log(req.requestedUser)
     next()
     return null
   } catch (err) {
