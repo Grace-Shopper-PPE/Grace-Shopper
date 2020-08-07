@@ -13,4 +13,6 @@ export {default as AllSanitizers} from './all-sanitizers'
 export {default as SingleUser} from './single-user'
 export {default as SingleProductPage} from './single-product-page'
 export {default as ProductUpdate} from './product-update'
+export {default as ProductAdd} from './product-add'
+
 export {Login, Signup} from './auth-form'
