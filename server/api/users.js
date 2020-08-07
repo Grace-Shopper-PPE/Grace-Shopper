@@ -2,6 +2,20 @@ const router = require('express').Router()
 const {User} = require('../db/models')
 module.exports = router
 
+// for any /users/:id routes, this piece of middleware
+// will be executed, and put the user on `req.requestedUser`
+router.param('id', async (req, res, next, id) => {
+  try {
+    const user = await User.findByPk(id)
+    if (!user) res.sendStatus(404)
+    req.requestedUser = user
+    next()
+    return null
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.get('/', async (req, res, next) => {
   try {
     const users = await User.findAll({
@@ -18,8 +32,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const id = req.params.id
-    const user = await User.findByPk(id)
+    const user = await req.requestedUser
     if (user) {
       res.json(user)
     } else {
@@ -39,31 +52,29 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.put('/:userid', async (req, res, next) => {
+router.put('/:id', async (req, res, next) => {
   try {
-    const id = req.params.userid
-    const user = await User.findByPk(id)
-    if (user) {
-      const updatedUser = await user.update(req.body)
-      res.json(updatedUser)
-    } else {
-      res.sendStatus(404)
-    }
+    const updatedUser = await req.requestedUser.update(req.body)
+    res.json(updatedUser)
   } catch (err) {
     next(err)
   }
 })
 
-router.delete('/:userid', async (req, res, next) => {
+const isAdminMiddleware = (req, res, next) => {
+  if (!req.user || !req.user.isAdmin) {
+    const err = new Error('Unauthorized')
+    err.status = 401
+    next(err)
+  } else {
+    next()
+  }
+}
+
+router.delete('/:id', isAdminMiddleware, async (req, res, next) => {
   try {
-    const id = req.params.userid
-    const user = await User.findByPk(id)
-    if (user) {
-      user.destroy()
-      res.sendStatus(204)
-    } else {
-      res.sendStatus(404)
-    }
+    await req.requestedUser.destroy()
+    res.sendStatus(204)
   } catch (err) {
     next(err)
   }
