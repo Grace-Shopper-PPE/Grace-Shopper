@@ -47,6 +47,18 @@ export const fetchUpdatedSingleProduct = (
   }
 }
 
+const CREATE_SINGLE_PRODUCT = 'CREATE_SINGLE_PRODUCT'
+const createSingleProduct = product => ({type: GET_SINGLE_PRODUCT, product})
+
+export const postSingleProduct = product => async dispatch => {
+  try {
+    const {data} = await axios.post('/api/products/', product)
+    dispatch(createSingleProduct(data))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_SINGLE_PRODUCT:
@@ -55,6 +67,8 @@ export default function(state = initialState, action) {
       return action.product
     case DELETE_SINGLE_PRODUCT:
       return action.productId
+    case CREATE_SINGLE_PRODUCT:
+      return {...state, products: [...state.products, action.product]}
     default:
       return state
   }

@@ -1,13 +1,9 @@
 import React from 'react'
 import ProductForm from './product-form'
 import {connect} from 'react-redux'
-import {
-  getSingleProduct,
-  fetchUpdatedSingleProduct,
-  fetchSingleProduct
-} from '../store/single-product'
+import {postSingleProduct} from '../store/single-product'
 
-export class ProductUpdate extends React.Component {
+export class ProductAdd extends React.Component {
   constructor(props) {
     super(props)
 
@@ -17,6 +13,7 @@ export class ProductUpdate extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
     const id = Number(this.props.match.params.id)
+    console.log(id, 'the id')
     const name = event.target.name.value
     const description = event.target.description.value
     const price = event.target.price.value
@@ -27,7 +24,7 @@ export class ProductUpdate extends React.Component {
     const size = event.target.size.value
     const vendor = event.target.vendor.value
     const sku = event.target.sku.value
-    this.props.editSingleProduct(id, {
+    this.props.newProduct({
       name,
       description,
       price,
@@ -55,7 +52,7 @@ export class ProductUpdate extends React.Component {
     console.log(this.props, 'the props')
     return (
       <div className="new-product-form">
-        <p>Edit Product #{Number(this.props.match.params.id)}: </p>
+        <p>Add Product: </p>
         <ProductForm handleSubmit={this.handleSubmit} product={this.props} />
       </div>
     )
@@ -64,14 +61,12 @@ export class ProductUpdate extends React.Component {
 
 const mapState = state => {
   return {
-    singleProduct: state.singleProduct
+    product: state.product
   }
 }
 
 const mapDispatch = dispatch => ({
-  getSingleProduct: productId => dispatch(fetchSingleProduct(productId)),
-  editSingleProduct: (productId, product) =>
-    dispatch(fetchUpdatedSingleProduct(productId, product))
+  newProduct: product => dispatch(postSingleProduct(product))
 })
 
-export default connect(mapState, mapDispatch)(ProductUpdate)
+export default connect(mapState, mapDispatch)(ProductAdd)
