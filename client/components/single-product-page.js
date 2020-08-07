@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {fetchSingleProduct} from '../store/single-product'
+import {fetchSingleProduct, deleteSingleProduct} from '../store/single-product'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
@@ -11,14 +11,23 @@ import Container from 'react-bootstrap/Container'
  * COMPONENT
  */
 export class SingleProductPage extends React.Component {
+  constructor() {
+    super()
+    this.remove = this.remove.bind(this)
+  }
+
   componentDidMount() {
     const productId = Number(this.props.match.params.id)
-    console.log(productId)
     this.props.getSingleProduct(productId)
   }
 
+  async remove(productId) {
+    await this.props.removeProduct(productId)
+    this.props.history.push('/products')
+  }
+
   render() {
-    const {name, price, imageUrl, description} = this.props.singleProduct
+    const {id, name, price, imageUrl, description} = this.props.singleProduct
     const newPrice = (price / 100).toFixed(2)
     return (
       <div>
@@ -35,7 +44,23 @@ export class SingleProductPage extends React.Component {
                     <Card.Title>{name}</Card.Title>
                     <Card.Subtitle>${newPrice}</Card.Subtitle>
                     <Card.Text>{description}</Card.Text>
-                    <Button variant="primary">Add To Cart</Button>
+                    <Row>
+                      <Col>
+                        <Button variant="primary">Add To Cart</Button>
+                      </Col>
+                      <Col className="d-flex justify-content-end">
+                        <i
+                          className="fa fa-edit fa-2x"
+                          onClick={() => {
+                            console.log('clicked edit!')
+                          }}
+                        />
+                        <i
+                          className="fa fa-trash fa-2x"
+                          onClick={() => this.remove(id)}
+                        />
+                      </Col>
+                    </Row>
                   </Card.Body>
                 </Col>
               </Row>
@@ -52,7 +77,8 @@ const mapState = state => ({
 })
 
 const mapDispatch = dispatch => ({
-  getSingleProduct: productId => dispatch(fetchSingleProduct(productId))
+  getSingleProduct: productId => dispatch(fetchSingleProduct(productId)),
+  removeProduct: productId => dispatch(deleteSingleProduct(productId))
 })
 
 export default connect(mapState, mapDispatch)(SingleProductPage)
