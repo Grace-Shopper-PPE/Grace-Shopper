@@ -10,41 +10,11 @@ import {
 export class ProductUpdate extends React.Component {
   constructor(props) {
     super(props)
-    // this.state = {
-    //   name: '',
-    //   description: '',
-    //   price: '',
-    //   color: '',
-    //   size: '',
-    //   category: '',
-    //   quantity: '',
-    //   vendor: '',
-    //   sku: '',
-    //   imageUrl: ''
-    // }
+
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps !== this.props) {
-  //     this.setState({...this.props.student})
-  //   }
-  // }
-
-  // handleChange(event) {
-  //   this.setState({[event.target.name]: event.target.value})
-  // }
-
   handleSubmit(event) {
-    // try {
-    //   event.preventDefault()
-    //   const id = Number(this.props.match.params.id)
-    //   await this.props.updateSingleProduct(id)
-    //   this.props.getSingleProduct(id)
-    // } catch (error) {
-    //   console.error(error)
-    // }
-
     event.preventDefault()
     const id = Number(this.props.match.params.id)
     console.log(id, 'the id')
