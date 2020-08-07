@@ -1,7 +1,7 @@
 import React from 'react'
 import ProductForm from './product-form'
 
-export class ProductUpdate extends React.Component {
+export default class ProductUpdate extends React.Component {
   constructor() {
     super()
     this.state = {
