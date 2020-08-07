@@ -14,10 +14,8 @@ router.get('/', async (req, res, next) => {
     const products = await OrderProducts.findAll({
       where: {
         orderId: cart[0].id
-      }
-      // include: {
-      //   model: Product,
-      // }
+      },
+      include: [Product]
     })
     res.json(products)
   } catch (err) {
