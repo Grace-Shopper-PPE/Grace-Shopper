@@ -33,10 +33,10 @@ const updatedSingleProduct = product => ({type: UPDATE_SINGLE_PRODUCT, product})
 
 export const fetchUpdatedSingleProduct = (
   productId,
-  update
+  product
 ) => async dispatch => {
   try {
-    const {data} = await axios.put(`/api/products/${productId}`, {...update})
+    const {data} = await axios.patch(`/api/products/${productId}`, product)
     dispatch(updatedSingleProduct(data))
   } catch (error) {
     console.error(error)

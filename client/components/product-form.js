@@ -1,16 +1,13 @@
 /* eslint-disable complexity */
 import React from 'react'
 
-export default class ProductForm extends React.Component {
-  render() {
-    return (
+function ProductForm(props) {
+  console.log(props)
+  return (
+    <div>
       <form onSubmit={props.handleSubmit}>
         <label htmlFor="name">
-          Campus Name{!props.name ? (
-            <span className="warning">required</span>
-          ) : (
-            ''
-          )}
+          Name{!props.name ? <span className="warning">required</span> : ''}
         </label>
         <input
           type="text"
@@ -113,6 +110,8 @@ export default class ProductForm extends React.Component {
 
         <button type="submit">Submit</button>
       </form>
-    )
-  }
+    </div>
+  )
 }
+
+export default ProductForm
