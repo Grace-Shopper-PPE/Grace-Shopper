@@ -79,5 +79,3 @@ it('DELETE /api/users', async () => {
   const checkCody = await User.findByPk(cody.id)
   expect(checkCody).to.equal(null)
 }) // end describe('/api/users')
-
-// e
