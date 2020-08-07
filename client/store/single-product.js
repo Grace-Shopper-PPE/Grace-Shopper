@@ -29,15 +29,19 @@ export const deleteSingleProduct = productId => async dispatch => {
 }
 
 const UPDATE_SINGLE_PRODUCT = 'UPDATE_SINGLE_PRODUCT'
-const updatedSingleProduct = product => ({type: UPDATE_SINGLE_PRODUCT, product})
+const updatedSingleProduct = (product, id) => ({
+  type: UPDATE_SINGLE_PRODUCT,
+  id,
+  product
+})
 
 export const fetchUpdatedSingleProduct = (
   productId,
   product
 ) => async dispatch => {
   try {
-    const {data} = await axios.patch(`/api/products/${productId}`, product)
-    dispatch(updatedSingleProduct(data))
+    await axios.patch(`/api/products/${productId}`, product)
+    dispatch(updatedSingleProduct(productId, product))
   } catch (error) {
     console.error(error)
   }
