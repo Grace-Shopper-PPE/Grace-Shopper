@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchUsers} from '../store/users'
+import {fetchUsers, removeUser} from '../store/users'
 import UserDetail from './user-detail'
 
 /**
@@ -8,7 +8,13 @@ import UserDetail from './user-detail'
  */
 export class AllUsers extends Component {
   componentDidMount() {
-    this.props.loadUsers()
+    this.props.fetchUsers()
+    this.removeUserCallback = this.removeUserCallback.bind(this)
+  }
+
+  removeUserCallback(event) {
+    const {removeUser, currentUser} = this.props
+    removeUser(currentUser.id)
   }
 
   render() {
@@ -17,18 +23,19 @@ export class AllUsers extends Component {
     return (
       <div>
         <h3>All Users</h3>
-        {!currentUser.isAdmin
-          ? `Sorry you don't have authorization to view user information`
-          : !users && !users.length
-            ? `No users`
-            : users.map(user => {
-                const {id} = user
-                return (
-                  <ul key={id}>
-                    <UserDetail user={user} />
-                  </ul>
-                )
-              })}
+        {currentUser.isAdmin
+          ? users.map(user => {
+              const {id} = user
+              return (
+                <ul key={id}>
+                  <UserDetail user={user} />
+                  <button type="submit" onClick={this.removeUserCallback}>
+                    Remove
+                  </button>
+                </ul>
+              )
+            })
+          : `Sorry you don't have authorization to view user information`}
       </div>
     )
   }
@@ -36,16 +43,7 @@ export class AllUsers extends Component {
 /**
  * CONTAINER
  */
-const mapState = state => {
-  return {
-    users: state.users,
-    currentUser: state.currentUser
-  }
-}
-const mapDispatch = dispatch => {
-  return {
-    loadUsers: () => dispatch(fetchUsers())
-  }
-}
+const mapState = ({users, currentUser}) => ({users, currentUser})
+const mapDispatch = {removeUser, fetchUsers}
 
 export default connect(mapState, mapDispatch)(AllUsers)
