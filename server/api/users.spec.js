@@ -69,7 +69,15 @@ it('DELETE /api/users', async () => {
   let cody = User.create({
     email: 'new_emaiL@gmail.com',
     firstName: 'Cody',
-    lastName: 'Dog'
+    lastName: 'Dog',
+    isAdmin: true
+  })
+
+  let murphy = User.create({
+    email: 'generalMurphy@gmail.com',
+    firstName: 'General',
+    lastName: 'Murphy',
+    isAdmin: false
   })
   await request(app)
     .delete('/api/users/1')
