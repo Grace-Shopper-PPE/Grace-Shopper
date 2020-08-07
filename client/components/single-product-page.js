@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
+import {Link} from 'react-router-dom'
 
 /**
  * COMPONENT
@@ -49,12 +50,15 @@ export class SingleProductPage extends React.Component {
                         <Button variant="primary">Add To Cart</Button>
                       </Col>
                       <Col className="d-flex justify-content-end">
-                        <i
-                          className="fa fa-edit fa-2x"
-                          onClick={() => {
-                            console.log('clicked edit!')
-                          }}
-                        />
+                        <Link to={`/products/${id}/edit`}>
+                          {' '}
+                          <i
+                            className="fa fa-edit fa-2x"
+                            onClick={() => {
+                              console.log('clicked edit!')
+                            }}
+                          />{' '}
+                        </Link>
                         <i
                           className="fa fa-trash fa-2x"
                           onClick={() => this.remove(id)}

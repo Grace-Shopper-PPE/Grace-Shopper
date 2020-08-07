@@ -10,11 +10,8 @@ const UserDetail = function(props) {
 
   return (
     <div>
-      <Link to={`/users/${id}`}>
-        <span>
-          {firstName} {lastName}
-        </span>
-        <p>{email}</p>
+      <Link to={`users/${id}`}>
+        {id} {firstName} {lastName} {email}
       </Link>
     </div>
   )
