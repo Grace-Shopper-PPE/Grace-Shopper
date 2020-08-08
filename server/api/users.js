@@ -16,7 +16,43 @@ router.param('id', async (req, res, next, id) => {
   }
 })
 
-router.get('/', async (req, res, next) => {
+/* use the following in the browser console to test if a new user can force his/her isAdmin status to be true
+const user = {
+firstName: 'Lu',
+lastName: 'Wang',
+email:'loowang@hotmail.com',
+isAdmin:true}
+
+fetch('/api/users', {
+  method: 'POST',
+  credentials: 'same-origin', // this will send our session cookie with this AJAX request, thus allowing our server to establish the session and current user
+  body: JSON.stringify(user)
+});
+*/
+
+const isAdminMiddleware = (req, res, next) => {
+  // if the current user doesn't have an account/not logged in
+  // or if the current user is logged in but is not admin
+  // or if the current user is logged in, not admin but he/she is not the user on the page
+  // the current user cannot view/edit/delete anyone but him/herself
+  if (!req.user) {
+    const err = new Error('Please sigh up or log in')
+    err.status = 401
+    next(err)
+  } else if (
+    req.user.isAdmin === false &&
+    req.user.id !== req.requestedUser.id
+  ) {
+    //if the current user is not admin and is not his/her own profile
+    const err = new Error('You can only do that to your own profile')
+    err.status = 401
+    next(err)
+  } else {
+    next()
+  }
+}
+
+router.get('/', isAdminMiddleware, async (req, res, next) => {
   try {
     const users = await User.findAll({
       // explicitly select only the id and email fields - even though
@@ -30,7 +66,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', isAdminMiddleware, async (req, res, next) => {
   try {
     const user = await req.requestedUser
     if (user) {
@@ -43,7 +79,7 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
+router.post('/', isAdminMiddleware, async (req, res, next) => {
   try {
     const user = await User.create(req.body)
     res.status(201).json(user)
@@ -52,7 +88,7 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', isAdminMiddleware, async (req, res, next) => {
   try {
     const updatedUser = await req.requestedUser.update(req.body)
     res.json(updatedUser)
@@ -60,16 +96,6 @@ router.put('/:id', async (req, res, next) => {
     next(err)
   }
 })
-
-const isAdminMiddleware = (req, res, next) => {
-  if (!req.user || !req.user.isAdmin) {
-    const err = new Error('Unauthorized')
-    err.status = 401
-    next(err)
-  } else {
-    next()
-  }
-}
 
 router.delete('/:id', isAdminMiddleware, async (req, res, next) => {
   try {
