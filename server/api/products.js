@@ -72,7 +72,7 @@ router.post('/', (req, res, next) => {
   }
 })
 
-router.put('/:id', async (req, res, next) => {
+router.patch('/:id', async (req, res, next) => {
   try {
     const product = await Product.findByPk(req.params.id)
     if (!product) {
