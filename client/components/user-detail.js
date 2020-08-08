@@ -9,9 +9,9 @@ const UserDetail = function(props) {
   const {id, firstName, lastName, email} = props.user
   return (
     <div>
-      <Link to={`users/${id}`}>
+      <a href={`users/${id}`}>
         {id} {firstName} {lastName} {email}
-      </Link>
+      </a>
     </div>
   )
 }
