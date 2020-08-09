@@ -29,18 +29,7 @@ const isAdminMiddleware = (req, res, next) => {
   }
 }
 
-const preventApiAccess = (req, res, next) => {
-  console.log(req.params.id)
-  if (req.params === '/api') {
-    const err = new Error(`Please pick another route`)
-    err.status = 401
-    next(err)
-  } else {
-    next()
-  }
-}
-
-router.get('/', preventApiAccess, async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
     const products = await Product.findAll()
     res.json(products)
@@ -49,7 +38,7 @@ router.get('/', preventApiAccess, async (req, res, next) => {
   }
 })
 
-router.get('/masks', preventApiAccess, async (req, res, next) => {
+router.get('/masks', async (req, res, next) => {
   try {
     const products = await Product.findAll({
       where: {
@@ -62,7 +51,7 @@ router.get('/masks', preventApiAccess, async (req, res, next) => {
   }
 })
 
-router.get('/faceshields', preventApiAccess, async (req, res, next) => {
+router.get('/faceshields', async (req, res, next) => {
   try {
     const products = await Product.findAll({
       where: {
@@ -75,7 +64,7 @@ router.get('/faceshields', preventApiAccess, async (req, res, next) => {
   }
 })
 
-router.get('/sanitizers', preventApiAccess, async (req, res, next) => {
+router.get('/sanitizers', async (req, res, next) => {
   try {
     const products = await Product.findAll({
       where: {
@@ -88,7 +77,7 @@ router.get('/sanitizers', preventApiAccess, async (req, res, next) => {
   }
 })
 
-router.get('/:id', preventApiAccess, async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const product = await req.requestedProduct
     if (product) {
