@@ -16,11 +16,11 @@ export const fetchCart = () => async dispatch => {
 
 // Add to cart
 const ADD_NEW_TO_CART = 'ADD_NEW_TO_CART'
-const addToCart = cart => ({type: ADD_NEW_TO_CART, cart})
+const addToCart = newItem => ({type: ADD_NEW_TO_CART, newItem})
 
-export const addItem = item => async dispatch => {
+export const addItem = id => async dispatch => {
   try {
-    const {data} = await axios.post('/api/cart', item)
+    const {data} = await axios.post('/api/cart', id)
     dispatch(addToCart(data))
   } catch (error) {
     console.error(error)
@@ -34,8 +34,20 @@ const incrementCart = updatedItem => ({type: INCREMENT_CART, updatedItem})
 export const incrementQuantity = item => async dispatch => {
   try {
     const {data} = await axios.put('/api/cart', item)
-    console.log(data)
     dispatch(incrementCart(data))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// decrement cart
+const DECREMENT_CART = 'DECREMENT_CART'
+const decrementCart = updatedItem => ({type: DECREMENT_CART, updatedItem})
+
+export const decrementQuantity = item => async dispatch => {
+  try {
+    const {data} = await axios.put('/api/cart', item)
+    dispatch(decrementCart(data))
   } catch (error) {
     console.error(error)
   }
@@ -51,7 +63,14 @@ export default function(state = initialState, action) {
           cartItem.quantity = cartItem.quantity + 1
         }
       })
-      console.log('state', state)
+      return state
+    }
+    case DECREMENT_CART: {
+      state.forEach(cartItem => {
+        if (cartItem.productId === action.updatedItem.productId) {
+          cartItem.quantity = cartItem.quantity - 1
+        }
+      })
       return state
     }
     default:

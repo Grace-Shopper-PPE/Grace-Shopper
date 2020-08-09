@@ -5,18 +5,19 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
 import {connect} from 'react-redux'
-import {fetchCart, incrementQuantity} from '../store/cart'
+import {incrementQuantity, decrementQuantity} from '../store/cart'
 
 const CartProductDetail = props => {
-  const {product, quantity, orderId, productId} = props.product
+  const {product, quantity, productId} = props.product
   const newPrice = (product.price / 100).toFixed(2)
 
-  const increment = async (orderId, productId) => {
-    const productToIncrement = {
-      orderId,
-      productId
-    }
-    await props.add(productToIncrement)
+  const increment = async id => {
+    await props.add({id, inc: 'inc'})
+    props.loadCart()
+  }
+
+  const decrement = async id => {
+    await props.decrease({id, dec: 'dec'})
     props.loadCart()
   }
 
@@ -35,12 +36,17 @@ const CartProductDetail = props => {
                   <Card.Text className="my-3">${newPrice}</Card.Text>
                   <Row className="d-flex flex-wrap">
                     <Row className="mx-3">
-                      <Button variant="primary">-</Button>
+                      <Button
+                        onClick={() => decrement(productId)}
+                        variant="primary"
+                      >
+                        -
+                      </Button>
                       <div className="align-self-center mx-2">
                         <Card.Text>Quantity: {quantity}</Card.Text>
                       </div>
                       <Button
-                        onClick={() => increment(orderId, productId)}
+                        onClick={() => increment(productId)}
                         variant="primary"
                       >
                         +
@@ -60,7 +66,8 @@ const CartProductDetail = props => {
 }
 
 const mapDispatch = dispatch => ({
-  add: item => dispatch(incrementQuantity(item))
+  add: item => dispatch(incrementQuantity(item)),
+  decrease: item => dispatch(decrementQuantity(item))
 })
 
 export default connect(null, mapDispatch)(CartProductDetail)
