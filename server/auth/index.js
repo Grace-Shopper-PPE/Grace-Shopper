@@ -2,16 +2,6 @@ const router = require('express').Router()
 const User = require('../db/models/user')
 module.exports = router
 
-const preventApiAccess = (req, res, next) => {
-  if (!req.user || req.user) {
-    const err = new Error(`Please pick another route`)
-    err.status = 401
-    next(err)
-  } else {
-    next()
-  }
-}
-
 router.post('/login', async (req, res, next) => {
   try {
     const user = await User.findOne({where: {email: req.body.email}})
@@ -48,7 +38,7 @@ router.post('/logout', (req, res) => {
   res.redirect('/')
 })
 
-router.get('/me', preventApiAccess, (req, res) => {
+router.get('/me', (req, res) => {
   res.json(req.user)
 })
 
