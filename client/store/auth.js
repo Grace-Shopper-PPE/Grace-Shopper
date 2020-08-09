@@ -6,6 +6,7 @@ import history from '../history'
  */
 const GET_USER = 'GET_USER'
 const REMOVE_USER = 'REMOVE_USER'
+const GET_ME = 'GET_ME'
 
 /**
  * INITIAL STATE
@@ -17,6 +18,7 @@ const defaultUser = {}
  */
 const getUser = user => ({type: GET_USER, user})
 const removeUser = () => ({type: REMOVE_USER})
+const getMe = user => ({type: GET_ME, user})
 
 /**
  * THUNK CREATORS
@@ -33,7 +35,7 @@ export const fetchSingleUser = id => async dispatch => {
 export const me = () => async dispatch => {
   try {
     const res = await axios.get('/auth/me')
-    dispatch(getUser(res.data || defaultUser))
+    dispatch(getMe(res.data || defaultUser))
   } catch (err) {
     console.error(err)
   }
@@ -75,11 +77,11 @@ export const auth = (
       res = await axios.post(`/auth/${method}`, {email, password})
     }
   } catch (authError) {
-    return dispatch(getUser({error: authError}))
+    return dispatch(getMe({error: authError}))
   }
 
   try {
-    dispatch(getUser(res.data))
+    dispatch(getMe(res.data))
     history.push('/home')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
@@ -102,6 +104,8 @@ export const logout = () => async dispatch => {
 export default function(state = defaultUser, action) {
   switch (action.type) {
     case GET_USER:
+      return action.user
+    case GET_ME:
       return action.user
     case REMOVE_USER:
       return defaultUser

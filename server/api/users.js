@@ -36,15 +36,12 @@ const isAdminMiddleware = (req, res, next) => {
   // or if the current user is logged in, not admin but he/she is not the user on the page
   // the current user cannot view/edit/delete anyone but him/herself
   if (!req.user) {
-    const err = new Error('Please sigh up or log in')
+    const err = new Error('Please sign up or log in')
     err.status = 401
     next(err)
-  } else if (
-    req.user.isAdmin === false &&
-    req.user.id !== req.requestedUser.id
-  ) {
+  } else if (req.user.isAdmin === false) {
     //if the current user is not admin and is not his/her own profile
-    const err = new Error('You can only do that to your own profile')
+    const err = new Error(`I'm watching you...`)
     err.status = 401
     next(err)
   } else {

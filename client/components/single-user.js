@@ -1,32 +1,21 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {me} from '../store'
+import {fetchSingleUser} from '../store'
+import User from './user-page'
 
 /**
  * COMPONENT
  */
 export class SingleUser extends Component {
   componentDidMount() {
-    // const id = this.props.match.params.userid
-    this.props.me()
+    const id = Number(this.props.match.params.id)
+    this.props.fetchSingleUser(id)
   }
 
   render() {
-    const currentUser = this.props
-    const {firstName, lastName, email, address, phoneNumber} = currentUser
-
-    // const authorized = currentUser && (currentUser.isAdmin)
-    // if (!authorized) return <div>Sorry you don't have authorization to view user information</div>
-
     return (
       <div>
-        <h3>Single User Profile</h3>
-        <p>
-          {firstName} {lastName}
-        </p>
-        <p>{email}</p>
-        <p>{address}</p>
-        <p>{phoneNumber}</p>
+        <User />
       </div>
     )
   }
@@ -34,7 +23,6 @@ export class SingleUser extends Component {
 /**
  * CONTAINER
  */
-const mapState = ({currentUser}) => ({currentUser})
-const mapDispatch = {me}
+const mapDispatch = {fetchSingleUser}
 
-export default connect(mapState, mapDispatch)(SingleUser)
+export default connect(null, mapDispatch)(SingleUser)
