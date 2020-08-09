@@ -5,19 +5,28 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
 import {connect} from 'react-redux'
-import {incrementQuantity, decrementQuantity} from '../store/cart'
+import {incrementQuantity, decrementQuantity, deleteItem} from '../store/cart'
 
 const CartProductDetail = props => {
   const {product, quantity, productId} = props.product
   const newPrice = (product.price / 100).toFixed(2)
 
   const increment = async id => {
-    await props.add({id, inc: 'inc'})
+    await props.increase({id, inc: 'inc'})
     props.loadCart()
   }
 
   const decrement = async id => {
-    await props.decrease({id, dec: 'dec'})
+    if (quantity > 1) {
+      await props.decrease({id, dec: 'dec'})
+    } else {
+      await props.remove(id)
+    }
+    props.loadCart()
+  }
+
+  const removeItem = async id => {
+    await props.remove(id)
     props.loadCart()
   }
 
@@ -53,7 +62,12 @@ const CartProductDetail = props => {
                       </Button>
                     </Row>
 
-                    <Button variant="primary">Remove</Button>
+                    <Button
+                      onClick={() => removeItem(productId)}
+                      variant="primary"
+                    >
+                      Remove
+                    </Button>
                   </Row>
                 </Card.Body>
               </Col>
@@ -66,8 +80,9 @@ const CartProductDetail = props => {
 }
 
 const mapDispatch = dispatch => ({
-  add: item => dispatch(incrementQuantity(item)),
-  decrease: item => dispatch(decrementQuantity(item))
+  increase: item => dispatch(incrementQuantity(item)),
+  decrease: item => dispatch(decrementQuantity(item)),
+  remove: item => dispatch(deleteItem(item))
 })
 
 export default connect(null, mapDispatch)(CartProductDetail)

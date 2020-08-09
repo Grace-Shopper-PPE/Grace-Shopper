@@ -53,6 +53,22 @@ export const decrementQuantity = item => async dispatch => {
   }
 }
 
+// delete from cart
+const DELETE_FROM_CART = 'DELETE_FROM_CART'
+const deletedFromCart = removedItemId => ({
+  type: DELETE_FROM_CART,
+  removedItemId
+})
+
+export const deleteItem = id => async dispatch => {
+  try {
+    await axios.delete(`/api/cart/${id}`)
+    dispatch(deletedFromCart(id))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_CART:
@@ -72,6 +88,12 @@ export default function(state = initialState, action) {
         }
       })
       return state
+    }
+    case DELETE_FROM_CART: {
+      const newState = state.filter(
+        cartItem => cartItem.productId !== action.removedItemId
+      )
+      return newState
     }
     default:
       return state

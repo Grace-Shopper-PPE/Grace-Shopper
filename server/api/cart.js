@@ -75,12 +75,19 @@ router.put('/', async (req, res, next) => {
   }
 })
 
-router.delete('/', async (req, res, next) => {
+router.delete('/:id', async (req, res, next) => {
   try {
+    const cart = await Order.findAll({
+      where: {
+        userId: req.user.id,
+        isComplete: false
+      }
+    })
+
     const cartItem = await OrderProducts.findOne({
       where: {
-        orderId: req.body.orderId,
-        productId: req.body.productId
+        orderId: cart[0].dataValues.id,
+        productId: req.params.id
       }
     })
     if (!cartItem) {
