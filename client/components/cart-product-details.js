@@ -10,6 +10,7 @@ import {incrementQuantity, decrementQuantity, deleteItem} from '../store/cart'
 const CartProductDetail = props => {
   const {product, quantity, productId} = props.product
   const newPrice = (product.price / 100).toFixed(2)
+  const maxQuant = product.quantity
 
   const increment = async id => {
     await props.increase({id, inc: 'inc'})
@@ -55,8 +56,14 @@ const CartProductDetail = props => {
                         <Card.Text>Quantity: {quantity}</Card.Text>
                       </div>
                       <Button
-                        onClick={() => increment(productId)}
                         variant="primary"
+                        onClick={() => {
+                          quantity < maxQuant
+                            ? increment(productId)
+                            : alert(
+                                'Sorry, you have reached the maximum quantity available for purchase'
+                              )
+                        }}
                       >
                         +
                       </Button>

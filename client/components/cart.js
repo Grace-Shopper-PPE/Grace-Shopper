@@ -20,6 +20,8 @@ const Cart = props => {
 
   const checkout = async () => {
     await props.order(cart)
+    alert('Your order is now being processed. Thank you!')
+    props.history.push('/products')
   }
 
   return (
