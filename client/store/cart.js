@@ -29,11 +29,12 @@ export const addItem = item => async dispatch => {
 
 // Increment cart
 const INCREMENT_CART = 'INCREMENT_CART'
-const incrementCart = cart => ({type: INCREMENT_CART, cart})
+const incrementCart = updatedItem => ({type: INCREMENT_CART, updatedItem})
 
 export const incrementQuantity = item => async dispatch => {
   try {
     const {data} = await axios.put('/api/cart', item)
+    console.log(data)
     dispatch(incrementCart(data))
   } catch (error) {
     console.error(error)
@@ -44,8 +45,15 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case GET_CART:
       return action.cart
-    case INCREMENT_CART:
-      return action.cart
+    case INCREMENT_CART: {
+      state.forEach(cartItem => {
+        if (cartItem.productId === action.updatedItem.productId) {
+          cartItem.quantity = cartItem.quantity + 1
+        }
+      })
+      console.log('state', state)
+      return state
+    }
     default:
       return state
   }

@@ -99,6 +99,11 @@ async function seed() {
       orderId: 3,
       productId: 1,
       quantity: 2
+    }),
+    OrderProducts.create({
+      orderId: 3,
+      productId: 2,
+      quantity: 1
     })
   ])
 

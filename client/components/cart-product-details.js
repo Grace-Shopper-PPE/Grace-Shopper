@@ -4,13 +4,21 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
+import {connect} from 'react-redux'
+import {fetchCart, incrementQuantity} from '../store/cart'
 
-/**
- * COMPONENT
- */
 const CartProductDetail = props => {
   const {product, quantity, orderId, productId} = props.product
   const newPrice = (product.price / 100).toFixed(2)
+
+  const increment = async (orderId, productId) => {
+    const productToIncrement = {
+      orderId,
+      productId
+    }
+    await props.add(productToIncrement)
+    props.loadCart()
+  }
 
   return (
     <div className="m-3">
@@ -32,7 +40,7 @@ const CartProductDetail = props => {
                         <Card.Text>Quantity: {quantity}</Card.Text>
                       </div>
                       <Button
-                        onClick={() => props.increment(orderId, productId)}
+                        onClick={() => increment(orderId, productId)}
                         variant="primary"
                       >
                         +
@@ -51,4 +59,8 @@ const CartProductDetail = props => {
   )
 }
 
-export default CartProductDetail
+const mapDispatch = dispatch => ({
+  add: item => dispatch(incrementQuantity(item))
+})
+
+export default connect(null, mapDispatch)(CartProductDetail)
