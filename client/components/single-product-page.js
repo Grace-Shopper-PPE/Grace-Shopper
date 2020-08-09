@@ -22,14 +22,9 @@ export class SingleProductPage extends React.Component {
     this.props.getSingleProduct(productId)
   }
 
-  remove(productId) {
-    this.props.removeProduct(productId)
-    // I don't know how to re-render the updated all products component without using setTimeout becuase it refreshes the page.
-    // this.props.history.push('/products')
-    const {push} = this.props.history
-    setTimeout(function() {
-      push('/products')
-    }, 1000)
+  async remove(productId) {
+    await this.props.removeProduct(productId)
+    this.props.history.push('/products')
   }
 
   render() {
