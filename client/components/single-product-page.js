@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
+import RemoveEditProductBtn from './remove-edit-product-btn'
 
 /**
  * COMPONENT
@@ -48,18 +49,7 @@ export class SingleProductPage extends React.Component {
                       <Col>
                         <Button variant="primary">Add To Cart</Button>
                       </Col>
-                      <Col className="d-flex justify-content-end">
-                        <i
-                          className="fa fa-edit fa-2x"
-                          onClick={() => {
-                            console.log('clicked edit!')
-                          }}
-                        />
-                        <i
-                          className="fa fa-trash fa-2x"
-                          onClick={() => this.remove(id)}
-                        />
-                      </Col>
+                      <RemoveEditProductBtn id={id} remove={this.remove} />
                     </Row>
                   </Card.Body>
                 </Col>

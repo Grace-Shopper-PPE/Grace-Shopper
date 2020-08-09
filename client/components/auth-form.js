@@ -27,6 +27,7 @@ const AuthForm = props => {
                   aria-label="email"
                   name="email"
                   aria-describedby="basic-addon1"
+                  type="email"
                 />
               </InputGroup>
             </label>
@@ -42,6 +43,7 @@ const AuthForm = props => {
                   aria-label="password"
                   name="password"
                   aria-describedby="basic-addon1"
+                  type="password"
                 />
               </InputGroup>
             </label>
@@ -89,31 +91,6 @@ const AuthForm = props => {
             </Form.Group>
           </Form.Row>
 
-          {/* <form onSubmit={handleSubmit} name={name}>
-      <div>
-          <label htmlFor="first">
-            <small>First Name</small>
-          </label>
-          <input name="first" type="text" />
-        </div>
-        <div>
-        <div>
-          <label htmlFor="last">
-            <small>Last Name </small>
-          </label>
-          <input name="last" type="text" />
-        </div>
-          <label htmlFor="email">
-            <small>Email</small>
-          </label>
-          <input name="email" type="text" />
-        </div>
-        <div>
-          <label htmlFor="password">
-            <small>Password</small>
-          </label>
-          <input name="password" type="password" />
-        </div> */}
           <div>
             <Button type="submit">{displayName}</Button>
           </div>

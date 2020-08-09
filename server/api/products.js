@@ -2,6 +2,33 @@ const router = require('express').Router()
 const {Product} = require('../db/models')
 module.exports = router
 
+// for any /users/:id routes, this piece of middleware
+// will be executed, and put the user on `req.requestedUser`
+router.param('id', async (req, res, next, id) => {
+  try {
+    const product = await Product.findByPk(id)
+    if (!product) res.sendStatus(404)
+    req.requestedProduct = product
+    next()
+    return null
+  } catch (err) {
+    next(err)
+  }
+})
+
+const isAdminMiddleware = (req, res, next) => {
+  // if the current user doesn't have an account/not logged in
+  // or if the current user is logged in but is not admin
+  // they cannot add/edit/delete products
+  if (!req.user || !req.user.isAdmin) {
+    const err = new Error(`You aren't authorized to do that`)
+    err.status = 401
+    next(err)
+  } else {
+    next()
+  }
+}
+
 router.get('/', async (req, res, next) => {
   try {
     const products = await Product.findAll()
@@ -52,7 +79,7 @@ router.get('/sanitizers', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const product = await Product.findByPk(req.params.id)
+    const product = await req.requestedProduct
     if (product) {
       res.json(product)
     } else {
@@ -63,7 +90,7 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-router.post('/', (req, res, next) => {
+router.post('/', isAdminMiddleware, (req, res, next) => {
   try {
     const newProduct = Product.create(req.body)
     res.status(201).json(newProduct)
@@ -72,9 +99,9 @@ router.post('/', (req, res, next) => {
   }
 })
 
-router.put('/:id', async (req, res, next) => {
+router.patch('/:id', isAdminMiddleware, async (req, res, next) => {
   try {
-    const product = await Product.findByPk(req.params.id)
+    const product = await req.requestedProduct
     if (!product) {
       return res.sendStatus(404)
     }
@@ -85,9 +112,9 @@ router.put('/:id', async (req, res, next) => {
   }
 })
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', isAdminMiddleware, async (req, res, next) => {
   try {
-    const product = await Product.findByPk(req.params.id)
+    const product = await req.requestedProduct
     if (!product) {
       return res.sendStatus(404)
     }

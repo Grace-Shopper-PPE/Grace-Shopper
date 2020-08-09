@@ -73,17 +73,23 @@ it('DELETE /api/users', async () => {
     isAdmin: true
   })
 
-  let murphy = User.create({
-    email: 'generalMurphy@gmail.com',
-    firstName: 'General',
-    lastName: 'Murphy',
+  let lu = User.create({
+    email: 'lulu@gmail.com',
+    firstName: 'Lu',
+    lastName: 'Wang',
     isAdmin: false
   })
   await request(app)
-    .delete('/api/users/1')
-    // .delete(`/api/users/${cody.id}`)
+    .delete('/api/users/2')
     .expect(204)
 
+  await request(app)
+    .delete('/api/users/1')
+    .expect(401)
+
+  const checkLu = await User.findByPk(lu.id)
+  expect(checkLu).to.equal(null)
+
   const checkCody = await User.findByPk(cody.id)
-  expect(checkCody).to.equal(null)
+  expect(checkCody).to.equal(checkCody)
 }) // end describe('/api/users')

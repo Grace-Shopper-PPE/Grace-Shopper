@@ -14,10 +14,10 @@ import {
   SingleUser,
   SingleProductPage,
   ProductUpdate,
-  Cart
+  Cart,
+  MyProfile
 } from './components'
 import {me} from './store'
-
 /**
  * COMPONENT
  */
@@ -27,7 +27,7 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn} = this.props
+    const {isLoggedIn, isAdmin} = this.props
 
     return (
       <Switch>
@@ -39,22 +39,32 @@ class Routes extends Component {
         <Route exact path="/products/faceshields" component={AllFaceshields} />
         <Route exact path="/products/sanitizers" component={AllSanitizers} />
         <Route exact path="/products/:id" component={SingleProductPage} />
-        <Route exact path="/users" component={AllUsers} />
-        <Route exact path="/products/:id/edit" component={ProductUpdate} />
-        <Route exact path="/cart" component={Cart} />
 
-        <Route
-          exact
-          path="/users/:userid"
-          render={routeProps => <SingleUser {...routeProps} />}
-        />
+        {isLoggedIn &&
+          !isAdmin && (
+            <>
+              {/* Routes placed here are only available after logging in */}
+              <Route path="/home" component={UserHome} />
+              <Route exact path="/profile" component={MyProfile} />
+            </>
+          )}
 
-        {isLoggedIn && (
-          <Switch>
-            {/* Routes placed here are only available after logging in */}
-            <Route path="/home" component={UserHome} />
-          </Switch>
-        )}
+        {isLoggedIn &&
+          isAdmin && (
+            <>
+              {/* Routes placed here are only available for admins after logging in*/}
+              <Route path="/home" component={UserHome} />
+              <Route exact path="/profile" component={MyProfile} />
+              <Route exact path="/users" component={AllUsers} />
+              <Route exact path="/users/:id" component={SingleUser} />
+              <Route
+                exact
+                path="/products/:id/edit"
+                component={ProductUpdate}
+              />
+            </>
+          )}
+
         {/* Displays our Login component as a fallback */}
         <Route component={Login} />
       </Switch>
@@ -66,20 +76,21 @@ class Routes extends Component {
  * CONTAINER
  */
 const mapState = state => {
+  // console.log(state.users)
   return {
     // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
-    isLoggedIn: !!state.currentUser.id
+    // conerced to boolean from the id number
+    isLoggedIn: !!state.currentUser.id,
+    isAdmin: !!state.currentUser.isAdmin
   }
 }
 
-const mapDispatch = dispatch => {
-  return {
-    loadInitialData() {
-      dispatch(me())
-    }
+const mapDispatch = dispatch => ({
+  loadInitialData: () => {
+    dispatch(me())
   }
-}
+})
 
 // The `withRouter` wrapper makes sure that updates are not blocked
 // when the url changes
@@ -90,5 +101,6 @@ export default withRouter(connect(mapState, mapDispatch)(Routes))
  */
 Routes.propTypes = {
   loadInitialData: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired
+  isLoggedIn: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool.isRequired
 }
