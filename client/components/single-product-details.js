@@ -9,7 +9,6 @@ const SingleProductDetail = props => {
   const {id, name, price, imageUrl} = props.product
   const newPrice = (price / 100).toFixed(2)
   const productUrl = `/products/${id}`
-  console.log(props.product)
 
   return (
     <div className="m-3" href={productUrl}>

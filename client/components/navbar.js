@@ -46,6 +46,9 @@ const Navbar = ({handleClick, isLoggedIn}) => (
                 <NavLink href="/profile">Profile</NavLink>
               </NavItem>
               <NavItem>
+                <NavLink href="/cart">Cart</NavLink>
+              </NavItem>
+              <NavItem>
                 <NavLink href="#" onClick={handleClick}>
                   Logout
                 </NavLink>
@@ -81,6 +84,9 @@ const Navbar = ({handleClick, isLoggedIn}) => (
               </NavLink>
             </NavItem>
             <NavItem>
+              <NavLink href="/cart">Cart</NavLink>
+            </NavItem>
+            <NavItem>
               <NavLink href="/login">Login</NavLink>
             </NavItem>
             <NavItem>
@@ -98,7 +104,6 @@ const Navbar = ({handleClick, isLoggedIn}) => (
  * CONTAINER
  */
 const mapState = state => {
-  console.log(state)
   return {
     isLoggedIn: !!state.currentUser.id
   }
