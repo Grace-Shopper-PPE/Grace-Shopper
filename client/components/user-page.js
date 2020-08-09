@@ -1,29 +1,22 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React from 'react'
 
 /**
  * COMPONENT
  */
-export class User extends Component {
-  render() {
-    const {currentUser} = this.props
-    const {firstName, lastName, email, address, phoneNumber} = currentUser
-    return (
-      <div>
-        <h3>User Profile</h3>
-        <p>
-          {firstName} {lastName}
-        </p>
-        <p>{email}</p>
-        <p>{address}</p>
-        <p>{phoneNumber}</p>
-      </div>
-    )
-  }
+export const User = props => {
+  const {user} = props
+  const {firstName, lastName, email, address, phoneNumber} = user
+  return (
+    <div>
+      <h3>User Profile</h3>
+      <p>
+        {firstName} {lastName}
+      </p>
+      <p>{email}</p>
+      <p>{address}</p>
+      <p>{phoneNumber}</p>
+    </div>
+  )
 }
-/**
- * CONTAINER
- */
-const mapState = ({currentUser}) => ({currentUser})
 
-export default connect(mapState)(User)
+export default User

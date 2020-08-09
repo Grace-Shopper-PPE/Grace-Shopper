@@ -53,6 +53,8 @@ class Routes extends Component {
           isAdmin && (
             <>
               {/* Routes placed here are only available for admins after logging in*/}
+              <Route path="/home" component={UserHome} />
+              <Route exact path="/profile" component={MyProfile} />
               <Route exact path="/users" component={AllUsers} />
               <Route exact path="/users/:id" component={SingleUser} />
               <Route
