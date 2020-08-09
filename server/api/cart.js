@@ -1,6 +1,5 @@
 const router = require('express').Router()
 const {Order, OrderProducts, Product} = require('../db/models')
-const models = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -11,9 +10,18 @@ router.get('/', async (req, res, next) => {
         isComplete: false
       }
     })
+    let orderId
+    if (!cart.length) {
+      const newCart = await Order.create({userId: req.user.id})
+      res.status(201).json(newCart)
+      orderId = newCart.orderId
+    } else if (cart.length) {
+      orderId = cart[0].dataValues.id
+    }
+
     const products = await OrderProducts.findAll({
       where: {
-        orderId: cart[0].id
+        orderId: orderId
       },
       include: [Product]
     })
@@ -31,19 +39,38 @@ router.post('/', async (req, res, next) => {
         isComplete: false
       }
     })
-    let orderId
-    if (!cart) {
-      const newCart = await Order.create({userId: req.user.id})
-      res.status(201).json(newCart)
-      orderId = newCart.orderId
-    } else {
-      orderId = cart[0].dataValues.id
-    }
+
     const newCartProduct = OrderProducts.create({
-      orderId,
+      orderId: cart[0].dataValues.id,
       productId: req.body.id
     })
     res.status(201).json(newCartProduct)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.put('/', async (req, res, next) => {
+  try {
+    const cart = await Order.findAll({
+      where: {
+        userId: req.user.id,
+        isComplete: false
+      }
+    })
+
+    const cartItem = await OrderProducts.findOne({
+      where: {
+        orderId: cart[0].dataValues.id,
+        productId: req.body.id
+      }
+    })
+    if (req.body.inc) {
+      await cartItem.update({quantity: cartItem.quantity + 1})
+    } else if (req.body.dec) {
+      await cartItem.update({quantity: cartItem.quantity - 1})
+    }
+    res.json(cartItem)
   } catch (error) {
     next(error)
   }

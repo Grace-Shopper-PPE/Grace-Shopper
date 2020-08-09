@@ -69,6 +69,22 @@ export const deleteItem = id => async dispatch => {
   }
 }
 
+// place order
+const PLACE_ORDER = 'PLACE_ORDER'
+const ordered = removedItemId => ({
+  type: PLACE_ORDER,
+  removedItemId
+})
+
+export const checkoutCart = cart => async dispatch => {
+  try {
+    const {data} = await axios.put('/api/order', cart)
+    dispatch(ordered())
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_CART:
