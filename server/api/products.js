@@ -30,7 +30,8 @@ const isAdminMiddleware = (req, res, next) => {
 }
 
 const preventApiAccess = (req, res, next) => {
-  if (!req.user || req.user) {
+  console.log(req.params.id)
+  if (req.params === '/api') {
     const err = new Error(`Please pick another route`)
     err.status = 401
     next(err)
