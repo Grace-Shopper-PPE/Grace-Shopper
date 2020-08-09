@@ -18,7 +18,6 @@ import {
   MyProfile
 } from './components'
 import {me} from './store'
-
 /**
  * COMPONENT
  */
@@ -40,7 +39,13 @@ class Routes extends Component {
         <Route exact path="/products/faceshields" component={AllFaceshields} />
         <Route exact path="/products/sanitizers" component={AllSanitizers} />
         <Route exact path="/products/:id" component={SingleProductPage} />
+
+        {/*
+        The below routes can only be accessed and rendered if the current user is admin
+        */}
         <Route exact path="/products/:id/edit" component={ProductUpdate} />
+        <Route exact path="/users" component={AllUsers} />
+        <Route exact path="/users/:id" component={SingleUser} />
 
         {isLoggedIn && (
           <Switch>
@@ -50,14 +55,13 @@ class Routes extends Component {
           </Switch>
         )}
 
-        {isAdmin &&
+        {/* {isAdmin &&
           isAdmin === true && (
-            <Switch>
-              {/* Routes placed here are only available for admins after logging in*/}
-              <Route path="/users" component={AllUsers} />
-              <Route exact path="/users/:id" component={SingleUser} />
-            </Switch>
-          )}
+            <Switch> */}
+        {/* Routes placed here are only available for admins after logging in*/}
+
+        {/* </Switch>
+          )} */}
 
         {/* Displays our Login component as a fallback */}
         <Route component={Login} />
@@ -70,7 +74,7 @@ class Routes extends Component {
  * CONTAINER
  */
 const mapState = state => {
-  // console.log(state.currentUser, !!state.currentUser.isAdmin)
+  // console.log(state.users)
   return {
     // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
@@ -80,13 +84,11 @@ const mapState = state => {
   }
 }
 
-const mapDispatch = dispatch => {
-  return {
-    loadInitialData() {
-      dispatch(me())
-    }
+const mapDispatch = dispatch => ({
+  loadInitialData: () => {
+    dispatch(me())
   }
-}
+})
 
 // The `withRouter` wrapper makes sure that updates are not blocked
 // when the url changes

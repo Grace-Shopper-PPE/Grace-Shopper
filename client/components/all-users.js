@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchUsers} from '../store/users'
+import {removeUser, fetchUsers} from '../store/users'
 import UserDetail from './user-detail'
-import removeUserBtn from './remove-user-btn'
 
 /**
  * COMPONENT
@@ -13,7 +12,7 @@ export class AllUsers extends Component {
   }
 
   render() {
-    const {users} = this.props
+    const {users, removeUser} = this.props
 
     return (
       <div>
@@ -23,7 +22,9 @@ export class AllUsers extends Component {
           return (
             <ul key={id}>
               <UserDetail user={user} />
-              <removeUserBtn />
+              <button type="submit" onClick={() => removeUser(id)}>
+                Remove User
+              </button>
             </ul>
           )
         })}
@@ -35,6 +36,6 @@ export class AllUsers extends Component {
  * CONTAINER
  */
 const mapState = ({users}) => ({users})
-const mapDispatch = {fetchUsers}
+const mapDispatch = {removeUser, fetchUsers}
 
 export default connect(mapState, mapDispatch)(AllUsers)

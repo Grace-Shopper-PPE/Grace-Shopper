@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
-import {Link} from 'react-router-dom'
+import RemoveEditProductBtn from './remove-edit-product-btn'
 
 /**
  * COMPONENT
@@ -22,9 +22,14 @@ export class SingleProductPage extends React.Component {
     this.props.getSingleProduct(productId)
   }
 
-  async remove(productId) {
-    await this.props.removeProduct(productId)
-    this.props.history.push('/products')
+  remove(productId) {
+    this.props.removeProduct(productId)
+    // I don't know how to re-render the updated all products component without using setTimeout becuase it refreshes the page.
+    // this.props.history.push('/products')
+    const {push} = this.props.history
+    setTimeout(function() {
+      push('/products')
+    }, 1000)
   }
 
   render() {
@@ -49,21 +54,7 @@ export class SingleProductPage extends React.Component {
                       <Col>
                         <Button variant="primary">Add To Cart</Button>
                       </Col>
-                      <Col className="d-flex justify-content-end">
-                        <Link to={`/products/${id}/edit`}>
-                          {' '}
-                          <i
-                            className="fa fa-edit fa-2x"
-                            onClick={() => {
-                              console.log('clicked edit!')
-                            }}
-                          />{' '}
-                        </Link>
-                        <i
-                          className="fa fa-trash fa-2x"
-                          onClick={() => this.remove(id)}
-                        />
-                      </Col>
+                      <RemoveEditProductBtn id={id} remove={this.remove} />
                     </Row>
                   </Card.Body>
                 </Col>

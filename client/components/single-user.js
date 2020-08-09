@@ -16,6 +16,9 @@ export class SingleUser extends Component {
     return (
       <div>
         <User />
+        <button type="submit" onClick={() => updateUser(id)}>
+          Update User
+        </button>
       </div>
     )
   }

@@ -14,15 +14,14 @@ export const fetchSingleProduct = productId => async dispatch => {
 }
 
 const DELETE_SINGLE_PRODUCT = 'DELETE_SINGLE_PRODUCT'
-const deletedSingleProduct = productId => ({
-  type: DELETE_SINGLE_PRODUCT,
-  productId
+const deletedSingleProduct = () => ({
+  type: DELETE_SINGLE_PRODUCT
 })
 
 export const deleteSingleProduct = productId => async dispatch => {
   try {
     await axios.delete(`/api/products/${productId}`)
-    dispatch(deletedSingleProduct(productId))
+    dispatch(deletedSingleProduct())
   } catch (error) {
     console.error(error)
   }
@@ -54,7 +53,7 @@ export default function(state = initialState, action) {
     case UPDATE_SINGLE_PRODUCT:
       return action.product
     case DELETE_SINGLE_PRODUCT:
-      return action.productId
+      return state
     default:
       return state
   }
