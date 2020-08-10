@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
-import {Link} from 'react-router-dom'
+import RemoveEditProductBtn from './remove-edit-product-btn'
 
 /**
  * COMPONENT
@@ -49,8 +49,10 @@ export class SingleProductPage extends React.Component {
                       <Col>
                         <Button variant="primary">Add To Cart</Button>
                       </Col>
+
+                      <RemoveEditProductBtn id={id} remove={this.remove} />
                       <Col className="d-flex justify-content-end">
-                        <Link to={`/products/${id}/edit`}>
+                        <a href={`/products/${id}/edit`} className="edit">
                           {' '}
                           <i
                             className="fa fa-edit fa-2x"
@@ -58,7 +60,7 @@ export class SingleProductPage extends React.Component {
                               console.log('clicked edit!')
                             }}
                           />{' '}
-                        </Link>
+                        </a>
                         <i
                           className="fa fa-trash fa-2x"
                           onClick={() => this.remove(id)}

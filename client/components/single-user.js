@@ -1,32 +1,39 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {me} from '../store'
+import {fetchSingleUser, removeUser} from '../store/single-user'
+import User from './user-page'
 
 /**
  * COMPONENT
  */
 export class SingleUser extends Component {
+  constructor() {
+    super()
+    this.removeCallBack = this.removeCallBack.bind(this)
+  }
+
   componentDidMount() {
-    // const id = this.props.match.params.userid
-    this.props.me()
+    const id = Number(this.props.match.params.id)
+    this.props.fetchSingleUser(id)
+  }
+
+  async removeCallBack(id) {
+    await this.props.removeUser(id)
+    this.props.history.push('/users')
   }
 
   render() {
-    const currentUser = this.props
-    const {firstName, lastName, email, address, phoneNumber} = currentUser
-
-    // const authorized = currentUser && (currentUser.isAdmin)
-    // if (!authorized) return <div>Sorry you don't have authorization to view user information</div>
-
+    const {user} = this.props
+    // console.log(this.props.currentUser)
     return (
       <div>
-        <h3>Single User Profile</h3>
-        <p>
-          {firstName} {lastName}
-        </p>
-        <p>{email}</p>
-        <p>{address}</p>
-        <p>{phoneNumber}</p>
+        <User user={user} />
+        <button type="submit" onClick={() => updateUser(user.id)}>
+          Update User
+        </button>
+        <button type="submit" onClick={() => this.removeCallBack(user.id)}>
+          Remove User
+        </button>
       </div>
     )
   }
@@ -34,7 +41,10 @@ export class SingleUser extends Component {
 /**
  * CONTAINER
  */
-const mapState = ({currentUser}) => ({currentUser})
-const mapDispatch = {me}
+/**
+ * CONTAINER
+ */
+const mapState = ({currentUser, user}) => ({currentUser, user})
+const mapDispatch = {fetchSingleUser, removeUser}
 
 export default connect(mapState, mapDispatch)(SingleUser)

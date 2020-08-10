@@ -14,15 +14,14 @@ export const fetchSingleProduct = productId => async dispatch => {
 }
 
 const DELETE_SINGLE_PRODUCT = 'DELETE_SINGLE_PRODUCT'
-const deletedSingleProduct = productId => ({
-  type: DELETE_SINGLE_PRODUCT,
-  productId
+const deletedSingleProduct = () => ({
+  type: DELETE_SINGLE_PRODUCT
 })
 
 export const deleteSingleProduct = productId => async dispatch => {
   try {
     await axios.delete(`/api/products/${productId}`)
-    dispatch(deletedSingleProduct(productId))
+    dispatch(deletedSingleProduct())
   } catch (error) {
     console.error(error)
   }
@@ -47,14 +46,28 @@ export const fetchUpdatedSingleProduct = (
   }
 }
 
+const CREATE_SINGLE_PRODUCT = 'CREATE_SINGLE_PRODUCT'
+const createSingleProduct = product => ({type: GET_SINGLE_PRODUCT, product})
+
+export const postSingleProduct = product => async dispatch => {
+  try {
+    const {data} = await axios.post('/api/products/', product)
+    dispatch(createSingleProduct(data))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_SINGLE_PRODUCT:
       return action.product
     case UPDATE_SINGLE_PRODUCT:
       return action.product
-    case DELETE_SINGLE_PRODUCT:
+      return state
       return action.productId
+    case CREATE_SINGLE_PRODUCT:
+      return {...state, products: [...state.products, action.product]}
     default:
       return state
   }
