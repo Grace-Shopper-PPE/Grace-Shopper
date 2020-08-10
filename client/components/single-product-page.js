@@ -49,7 +49,23 @@ export class SingleProductPage extends React.Component {
                       <Col>
                         <Button variant="primary">Add To Cart</Button>
                       </Col>
+
                       <RemoveEditProductBtn id={id} remove={this.remove} />
+                      <Col className="d-flex justify-content-end">
+                        <a href={`/products/${id}/edit`} className="edit">
+                          {' '}
+                          <i
+                            className="fa fa-edit fa-2x"
+                            onClick={() => {
+                              console.log('clicked edit!')
+                            }}
+                          />{' '}
+                        </a>
+                        <i
+                          className="fa fa-trash fa-2x"
+                          onClick={() => this.remove(id)}
+                        />
+                      </Col>
                     </Row>
                   </Card.Body>
                 </Col>

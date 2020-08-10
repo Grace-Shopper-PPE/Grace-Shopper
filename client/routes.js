@@ -42,7 +42,6 @@ class Routes extends Component {
         <Route exact path="/products/faceshields" component={AllFaceshields} />
         <Route exact path="/products/sanitizers" component={AllSanitizers} />
         <Route exact path="/products/:id" component={SingleProductPage} />
-
         {isLoggedIn &&
           !isAdmin && (
             <>
@@ -52,7 +51,9 @@ class Routes extends Component {
             </>
           )}
 
+
         {isLoggedIn &&
+
           isAdmin && (
             <>
               {/* Routes placed here are only available for admins after logging in*/}
