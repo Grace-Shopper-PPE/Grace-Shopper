@@ -68,7 +68,6 @@ export default function(state = initialState, action) {
       return state
     case CREATE_SINGLE_PRODUCT:
       return {...state, products: [...state.products, action.product]}
-
     default:
       return state
   }

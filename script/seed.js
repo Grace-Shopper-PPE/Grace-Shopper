@@ -9,6 +9,7 @@ async function seed() {
 
   const users = await Promise.all([
     User.create({
+      id: 1,
       email: 'cody@email.com',
       password: '123456',
       firstName: 'Cody',
@@ -18,6 +19,7 @@ async function seed() {
       isAdmin: true
     }),
     User.create({
+      id: 2,
       email: 'murphy@email.com',
       password: '123456',
       firstName: 'Eddie',
@@ -26,6 +28,7 @@ async function seed() {
       address: '6952 Hillmeyer Ave, Arverne, NY, 11692'
     }),
     User.create({
+      id: 3,
       email: 'johnson@gmail.com',
       password: '123dfda',
       firstName: 'Mike',
@@ -34,6 +37,7 @@ async function seed() {
       address: '2627 Theresa Ln, Moody, TX, 76557'
     }),
     User.create({
+      id: 4,
       email: 'd.smith@email.com',
       password: '456454g',
       firstName: 'Dennis',
@@ -42,6 +46,7 @@ async function seed() {
       address: '830 Ingalls Ave #334, Tribune, KS, 67879 '
     }),
     User.create({
+      id: 5,
       email: 'cindy.j@email.com',
       password: 'asfd4fag',
       firstName: 'Cindy',
@@ -53,6 +58,7 @@ async function seed() {
 
   const products = await Promise.all([
     Product.create({
+      id: 1,
       name: 'Cotton Facemask',
       price: 494,
       quantity: 55,
@@ -61,6 +67,7 @@ async function seed() {
         'Facemask Cotton Face Mask With Filter Pocket PM2.5 Filter 2 Layer Washable Face Mask Reusable Mask'
     }),
     Product.create({
+      id: 2,
       name: 'Rainbow Sun Shield',
       price: 1699,
       quantity: 15,
@@ -71,6 +78,7 @@ async function seed() {
         'https://i.etsystatic.com/18717999/r/il/c67c2d/2487349479/il_794xN.2487349479_qr23.jpg'
     }),
     Product.create({
+      id: 3,
       name: 'Ladybug Faceshield',
       price: 1950,
       quantity: 40,
