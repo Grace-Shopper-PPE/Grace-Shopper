@@ -64,10 +64,13 @@ export default function(state = initialState, action) {
       return action.product
     case UPDATE_SINGLE_PRODUCT:
       return action.product
+    case DELETE_SINGLE_PRODUCT:
       return state
-      return action.productId
+
+
     case CREATE_SINGLE_PRODUCT:
       return {...state, products: [...state.products, action.product]}
+
     default:
       return state
   }
