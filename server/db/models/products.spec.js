@@ -46,18 +46,6 @@ describe('Product Model', () => {
       }
     })
 
-    it('requires a `price`', async () => {
-      const product = Product.build({name: 'Green mask'})
-      try {
-        await product.validate()
-        throw Error(
-          'validation was successful but should have failed without `price`'
-        )
-      } catch (err) {
-        expect(err.message).to.contain('price cannot be null')
-      }
-    })
-
     it('price is greater than or equal to 1', async () => {
       const product = Product.build({price: 0})
       try {

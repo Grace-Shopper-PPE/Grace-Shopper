@@ -1,19 +1,30 @@
 import React from 'react'
-
+import {connect} from 'react-redux'
 import {Navbar} from './components'
 import Routes from './routes'
-import Button from 'react-bootstrap/Button'
+import {fetchCart} from './store/cart'
 
-const App = () => {
-  return (
-    <div>
-      <Navbar />
-      <Routes />
-      {/* <Button variant="primary" size="lg">
-        Large Button
-      </Button> */}
-    </div>
-  )
+export class App extends React.Component {
+  componentDidMount() {
+    this.props.loadCart()
+  }
+
+  render() {
+    return (
+      <div>
+        <Navbar />
+        <Routes />
+      </div>
+    )
+  }
 }
 
-export default App
+const mapState = state => ({
+  cart: state.cart
+})
+
+const mapDispatch = dispatch => ({
+  loadCart: () => dispatch(fetchCart())
+})
+
+export default connect(mapState, mapDispatch)(App)
