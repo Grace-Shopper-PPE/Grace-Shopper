@@ -46,6 +46,9 @@ const Navbar = ({handleClick, isLoggedIn}) => (
                 <NavLink href="/profile">Profile</NavLink>
               </NavItem>
               <NavItem>
+                <NavLink href="/cart">Cart</NavLink>
+              </NavItem>
+              <NavItem>
                 <NavLink href="#" onClick={handleClick}>
                   Logout
                 </NavLink>
@@ -79,6 +82,9 @@ const Navbar = ({handleClick, isLoggedIn}) => (
               <NavLink eventKey="link-4" href="/products/sanitizers">
                 Sanitizers
               </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/cart">Cart</NavLink>
             </NavItem>
             <NavItem>
               <NavLink href="/login">Login</NavLink>
