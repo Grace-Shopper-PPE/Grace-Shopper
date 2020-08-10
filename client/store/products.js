@@ -53,6 +53,21 @@ export const fetchSanitizers = () => async dispatch => {
   }
 }
 
+const DELETE_SINGLE_PRODUCT = 'DELETE_SINGLE_PRODUCT'
+const deletedSingleProduct = productId => ({
+  type: DELETE_SINGLE_PRODUCT,
+  productId
+})
+
+export const deleteSingleProduct = productId => async dispatch => {
+  try {
+    await axios.delete(`/api/products/${productId}`)
+    dispatch(deletedSingleProduct(productId))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_PRODUCTS:
@@ -63,6 +78,8 @@ export default function(state = initialState, action) {
       return action.products
     case GET_SANITIZERS:
       return action.products
+    case DELETE_SINGLE_PRODUCT:
+      return state.filter(product => product.id !== action.productId)
     default:
       return state
   }
