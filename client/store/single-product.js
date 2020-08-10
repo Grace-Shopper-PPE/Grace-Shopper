@@ -66,7 +66,6 @@ export default function(state = initialState, action) {
       return action.product
     case DELETE_SINGLE_PRODUCT:
       return state
-
     case CREATE_SINGLE_PRODUCT:
       return {...state, products: [...state.products, action.product]}
 
