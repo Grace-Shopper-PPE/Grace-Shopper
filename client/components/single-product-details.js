@@ -14,14 +14,25 @@ const SingleProductDetail = props => {
   const newPrice = (price / 100).toFixed(2)
   const productUrl = `/products/${id}`
 
-  const addToCart = async id => {
-    const containsItem = props.cart.filter(item => {
-      return item.productId === id
-    })
-    if (containsItem.length) {
-      await props.add({id, inc: 'inc'})
+  const addToCart = async pid => {
+    if (props.currentUser.id) {
+      const containsItem = props.cart.filter(item => {
+        return item.productId === pid
+      })
+      if (containsItem.length) {
+        await props.add({id: pid, inc: 'inc'})
+      } else {
+        await props.addNew({id: pid})
+      }
     } else {
-      await props.addNew({id})
+      let localCart = localStorage.getItem('CART')
+      localCart = localCart ? localCart.split('},{') : []
+      localCart.push({id: pid, name, price})
+      const stringCart = JSON.stringify(localCart)
+      console.log('cart before set', stringCart)
+      localStorage.setItem('CART', stringCart)
+
+      console.log('newcart', localStorage.getItem('CART'))
     }
   }
 
@@ -42,7 +53,8 @@ const SingleProductDetail = props => {
 }
 
 const mapState = state => ({
-  cart: state.cart
+  cart: state.cart,
+  currentUser: state.currentUser
 })
 
 const mapDispatch = dispatch => ({
