@@ -9,7 +9,7 @@ Visit [Our PPE Shop](https://graceshopper2020.herokuapp.com/) to get what you ne
 * [Setup](#Setup)
 * [Team](#Team)
   * [Lu Wang](#Lu-Wang)
-  * [Ariel Weiner](#Ariel-Weiner)
+  * [Ariel Wainer](#Ariel-Wainer)
   * [Sara Culhane](#Sara-Culhane)
 * [Tech Stack](#Tech-Stack)
   * [React](#React)
@@ -38,7 +38,7 @@ Go to http://localhost:8080 to use PPE Shop!
 [Github](https://github.com/LuWang1983)
 [LinkedIn](https://www.linkedin.com/in/loowang)
 
-### Ariel Weiner
+### Ariel Wainer
 
 [Github](https://github.com/arielwainer4)
 [LinkedIn](https://www.linkedin.com/in/arielwainer/)
