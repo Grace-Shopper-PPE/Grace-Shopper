@@ -16,18 +16,18 @@ const SingleProductDetail = props => {
   const productUrl = `/products/${id}`
   const {removeProduct} = props
 
-  const addToCart = async () => {
+  const addToCart = () => {
     if (props.currentUser.id) {
       const containsItem = props.cart.filter(item => {
         return item.productId === id
       })
       if (containsItem.length) {
-        await props.add({id, inc: 'inc'})
+        props.add({id, inc: 'inc'})
       } else {
-        await props.addNew({id})
+        props.addNew({id})
       }
-      document.querySelector('.cart-nav span').textContent =
-        Number(document.querySelector('.cart-nav span').textContent) + 1
+      // document.querySelector('.cart-nav span').textContent =
+      //   Number(document.querySelector('.cart-nav span').textContent) + 1
     } else {
       addToLocalCart(id, name, price, imageUrl)
     }

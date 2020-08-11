@@ -7,9 +7,22 @@ import {Nav, NavItem, NavLink} from 'react-bootstrap'
 import {cartNav} from './local-cart'
 import Badge from 'react-bootstrap/Badge'
 
-const Navbar = ({handleClick, isLoggedIn}) => {
-  const total = cartNav()
-  console.log(total)
+const Navbar = props => {
+  const {isLoggedIn, handleClick, cart} = props
+  console.log('cart nav', cart)
+
+  if (isLoggedIn) {
+    let total = cart.reduce((accum, item) => accum + item.quantity, 0)
+    console.log('total', total)
+
+    document.querySelector('.cart-nav span').textContent = total
+  } else {
+    let total = cartNav()
+    console.log('tot', total)
+    // document.querySelector('.cart-nav span').textContent = total
+    console.log(document.querySelector('.cart-nav span'))
+  }
+
   return (
     <div>
       <h1>Grace Shopper PPE </h1>
@@ -46,7 +59,7 @@ const Navbar = ({handleClick, isLoggedIn}) => {
                 </NavItem>
                 <NavItem>
                   <NavLink href="/cart" className="cart-nav">
-                    Cart <Badge variant="primary">{total}</Badge>
+                    Cart (<span>0</span>)
                   </NavLink>
                 </NavItem>
                 <NavItem>
@@ -86,7 +99,7 @@ const Navbar = ({handleClick, isLoggedIn}) => {
               </NavItem>
               <NavItem>
                 <NavLink href="/cart" className="cart-nav">
-                  Cart <Badge variant="primary">{total}</Badge>
+                  Cart (<span>0</span>)
                 </NavLink>
               </NavItem>
               <NavItem>
@@ -109,7 +122,8 @@ const Navbar = ({handleClick, isLoggedIn}) => {
  */
 const mapState = state => {
   return {
-    isLoggedIn: !!state.currentUser.id
+    isLoggedIn: !!state.currentUser.id,
+    cart: state.cart
   }
 }
 

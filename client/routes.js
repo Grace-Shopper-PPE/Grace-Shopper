@@ -26,20 +26,20 @@ import {fetchCart} from './store/cart'
 class Routes extends Component {
   async componentDidMount() {
     await this.props.loadInitialData()
-    const {isLoggedIn} = this.props
-    if (isLoggedIn) {
-      console.log('inside if')
-      await this.props.loadCart()
-    } else {
-      console.log('no user logged in')
-    }
+    // const {isLoggedIn} = this.props
+    // console.log('props:', this.props)
+    // if (isLoggedIn) {
+    //   console.log('inside if')
+    //   await this.props.loadCart()
+    // } else {
+    //   console.log('no user logged in')
+    // }
     // kept in for now because if statement isnt working properly
-    await this.props.loadCart()
+
   }
 
   render() {
     const {isLoggedIn, isAdmin} = this.props
-
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
