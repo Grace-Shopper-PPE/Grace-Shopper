@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import {connect} from 'react-redux'
@@ -12,6 +12,7 @@ const SingleProductDetail = props => {
   const {id, name, price, imageUrl} = props.product
   const newPrice = (price / 100).toFixed(2)
   const productUrl = `/products/${id}`
+  const {removeProduct} = props
 
   const addToCart = async () => {
     if (props.currentUser.id) {
@@ -27,7 +28,12 @@ const SingleProductDetail = props => {
         Number(document.querySelector('.cart-nav span').textContent) + 1
     } else {
       addToLocalCart(id, name, price, imageUrl)
+
     }
+  }
+
+  const remove = productId => {
+    removeProduct(productId)
   }
 
   return (
@@ -40,6 +46,7 @@ const SingleProductDetail = props => {
           <Button onClick={() => addToCart()} variant="primary">
             Add To Cart
           </Button>
+          <RemoveEditProductBtn id={id} remove={remove} />
         </Card.Body>
       </Card>
     </div>
@@ -53,7 +60,8 @@ const mapState = state => ({
 
 const mapDispatch = dispatch => ({
   add: item => dispatch(incrementQuantity(item)),
-  addNew: id => dispatch(addItem(id))
+  addNew: id => dispatch(addItem(id)),
+  removeProduct: productId => dispatch(deleteSingleProduct(productId))
 })
 
 export default connect(mapState, mapDispatch)(SingleProductDetail)

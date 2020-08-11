@@ -2,15 +2,26 @@ const router = require('express').Router()
 const {Order, OrderProducts, Product} = require('../db/models')
 module.exports = router
 
+// helper functions
+const findCart = userId =>
+  Order.findAll({
+    where: {
+      userId,
+      isComplete: false
+    }
+  })
+const findCartItem = (orderId, productId) =>
+  OrderProducts.findOne({
+    where: {
+      orderId,
+      productId
+    }
+  })
+
+// Routes
 router.get('/', async (req, res, next) => {
   try {
-    console.log(req.user.id)
-    const cart = await Order.findAll({
-      where: {
-        userId: req.user.id,
-        isComplete: false
-      }
-    })
+    const cart = await findCart(req.user.id)
     let orderId
     if (!cart.length) {
       const newCart = await Order.create({userId: req.user.id})
@@ -34,12 +45,7 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const cart = await Order.findAll({
-      where: {
-        userId: req.user.id,
-        isComplete: false
-      }
-    })
+    const cart = await findCart(req.user.id)
 
     const newCartProduct = OrderProducts.create({
       orderId: cart[0].dataValues.id,
@@ -53,45 +59,9 @@ router.post('/', async (req, res, next) => {
 
 router.put('/', async (req, res, next) => {
   try {
-    const cart = await Order.findAll({
-      where: {
-        userId: req.user.id,
-        isComplete: false
-      }
-    })
+    const cart = await findCart(req.user.id)
+    const cartItem = await findCartItem(cart[0].dataValues.id, req.body.id)
 
-    const cartItem = await OrderProducts.findOne({
-      where: {
-        orderId: cart[0].dataValues.id,
-        productId: req.body.id
-      }
-    })
-    if (req.body.inc) {
-      await cartItem.update({quantity: cartItem.quantity + 1})
-    } else if (req.body.dec) {
-      await cartItem.update({quantity: cartItem.quantity - 1})
-    }
-    res.json(cartItem)
-  } catch (error) {
-    next(error)
-  }
-})
-
-router.put('/', async (req, res, next) => {
-  try {
-    const cart = await Order.findAll({
-      where: {
-        userId: req.user.id,
-        isComplete: false
-      }
-    })
-
-    const cartItem = await OrderProducts.findOne({
-      where: {
-        orderId: cart[0].dataValues.id,
-        productId: req.body.id
-      }
-    })
     if (req.body.inc) {
       await cartItem.update({quantity: cartItem.quantity + 1})
     } else if (req.body.dec) {
@@ -105,19 +75,8 @@ router.put('/', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   try {
-    const cart = await Order.findAll({
-      where: {
-        userId: req.user.id,
-        isComplete: false
-      }
-    })
-
-    const cartItem = await OrderProducts.findOne({
-      where: {
-        orderId: cart[0].dataValues.id,
-        productId: req.params.id
-      }
-    })
+    const cart = await findCart(req.user.id)
+    const cartItem = await findCartItem(cart[0].dataValues.id, req.params.id)
     if (!cartItem) {
       return res.sendStatus(404)
     }

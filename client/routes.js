@@ -35,6 +35,7 @@ class Routes extends Component {
     }
     // kept in for now because if statement isnt working properly
     await this.props.loadCart()
+
   }
 
   render() {
@@ -97,6 +98,7 @@ const mapState = state => {
     isLoggedIn: !!state.currentUser.id,
     isAdmin: !!state.currentUser.isAdmin,
     cart: state.cart
+
   }
 }
 

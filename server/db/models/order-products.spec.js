@@ -1,8 +1,8 @@
 /* global describe beforeEach it */
 
 const {expect} = require('chai')
-const db = require('../index')
-const orderProducts = db.model('orderProducts')
+const db = require('../db')
+const orderProducts = require('./index')
 
 describe('orderProducts Model', () => {
   beforeEach(() => {
@@ -10,14 +10,15 @@ describe('orderProducts Model', () => {
   })
 
   describe('Validations', () => {
-    it('has `isComplete` and `price`', async () => {
-      const orderProd = await orderProducts.create({
-        isComplete: true,
-        price: 700
+    it('`isComplete` has a truthy value', async () => {
+      const orderProd1 = await orderProducts.create({
+        isComplete: true
       })
-
-      expect(orderProd.isComplete).to.equal(true)
-      expect(orderProd.price).to.equal(700)
+      const orderProd2 = await orderProducts.create({
+        isComplete: null
+      })
+      expect(orderProd1.isComplete).to.equal(true)
+      expect(orderProd2.isComplete).to.equal(false)
     })
   })
 })
