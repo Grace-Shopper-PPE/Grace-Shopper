@@ -20,19 +20,22 @@ import {
 } from './components'
 import {me} from './store'
 import {fetchCart} from './store/cart'
-
 /**
  * COMPONENT
  */
 class Routes extends Component {
-  componentDidMount() {
-    this.props.loadInitialData()
-    this.props.loadCart()
-    // window.localStorage.removeItem('CART')
-    const CART = window.localStorage.getItem('CART')
-    if (!CART) {
-      window.localStorage.setItem('CART', '')
+  async componentDidMount() {
+    await this.props.loadInitialData()
+    const {isLoggedIn} = this.props
+    if (isLoggedIn) {
+      console.log('inside if')
+      await this.props.loadCart()
+    } else {
+      console.log('no user logged in')
     }
+    // kept in for now because if statement isnt working properly
+    await this.props.loadCart()
+
   }
 
   render() {
@@ -94,8 +97,8 @@ const mapState = state => {
     // conerced to boolean from the id number
     isLoggedIn: !!state.currentUser.id,
     isAdmin: !!state.currentUser.isAdmin,
-    cart: state.cart,
-    currentUser: state.currentUser
+    cart: state.cart
+
   }
 }
 

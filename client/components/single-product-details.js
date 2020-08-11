@@ -3,8 +3,7 @@ import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import {connect} from 'react-redux'
 import {incrementQuantity, addItem} from '../store/cart'
-import {deleteSingleProduct} from '../store/products'
-import RemoveEditProductBtn from './remove-edit-product-btn'
+import {addToLocalCart} from './local-cart'
 /**
  * COMPONENT
  */
@@ -15,25 +14,21 @@ const SingleProductDetail = props => {
   const productUrl = `/products/${id}`
   const {removeProduct} = props
 
-  const addToCart = async pid => {
+  const addToCart = async () => {
     if (props.currentUser.id) {
       const containsItem = props.cart.filter(item => {
-        return item.productId === pid
+        return item.productId === id
       })
       if (containsItem.length) {
-        await props.add({id: pid, inc: 'inc'})
+        await props.add({id, inc: 'inc'})
       } else {
-        await props.addNew({id: pid})
+        await props.addNew({id})
       }
+      document.querySelector('.cart-nav span').textContent =
+        Number(document.querySelector('.cart-nav span').textContent) + 1
     } else {
-      let localCart = localStorage.getItem('CART')
-      localCart = localCart ? localCart.split('},{') : []
-      localCart.push({id: pid, name, price})
-      const stringCart = JSON.stringify(localCart)
-      console.log('cart before set', stringCart)
-      localStorage.setItem('CART', stringCart)
+      addToLocalCart(id, name, price, imageUrl)
 
-      console.log('newcart', localStorage.getItem('CART'))
     }
   }
 
@@ -48,7 +43,7 @@ const SingleProductDetail = props => {
         <Card.Body>
           <Card.Title>{name}</Card.Title>
           <Card.Text>${newPrice}</Card.Text>
-          <Button onClick={() => addToCart(id)} variant="primary">
+          <Button onClick={() => addToCart()} variant="primary">
             Add To Cart
           </Button>
           <RemoveEditProductBtn id={id} remove={remove} />
