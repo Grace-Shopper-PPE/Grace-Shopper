@@ -1,66 +1,154 @@
 'use strict'
+//import chance a native node module to generate random strings, numbers etc.
+const chance = require('chance')(123)
+//node promise library
+const Promise = require('bluebird')
+const GenerateImage = require('generate-image')
 
 const db = require('../server/db')
 const {User, Product, Order, OrderProducts} = require('../server/db/models')
 
-async function seed() {
-  await db.sync({force: true})
-  console.log('db synced!')
+const numUsers = 50
+const numProducts = 100
+const numCartsOrders = 50
 
-  const users = await Promise.all([
-    User.create({
-      email: 'cody@email.com',
-      password: '123456',
-      firstName: 'Cody',
-      lastName: 'Davidson',
-      phoneNumber: '(402)773-5461',
-      address: '810 W Cedar St, Sutton, NE, 68979',
-      isAdmin: true
-    }),
-    User.create({
-      email: 'murphy@email.com',
-      password: '123456',
-      firstName: 'Eddie',
-      lastName: 'Murphy',
-      phoneNumber: '(718)945-0832',
-      address: '6952 Hillmeyer Ave, Arverne, NY, 11692'
-    }),
-    User.create({
-      email: 'johnson@gmail.com',
-      password: '123dfda',
-      firstName: 'Mike',
-      lastName: 'Johnson',
-      phoneNumber: '(254)853-9794',
-      address: '2627 Theresa Ln, Moody, TX, 76557'
-    }),
-    User.create({
-      email: 'd.smith@email.com',
-      password: '456454g',
-      firstName: 'Dennis',
-      lastName: 'Smith',
-      phoneNumber: 'unlisted',
-      address: '830 Ingalls Ave #334, Tribune, KS, 67879 '
-    }),
-    User.create({
-      email: 'cindy.j@email.com',
-      password: 'asfd4fag',
-      firstName: 'Cindy',
-      lastName: 'Johnson',
-      phoneNumber: '(916)687-0353',
-      address: 'Po Box 2098, Fair Oaks, CA, 95628'
+// ===== helper functions =======
+const emails = chance.unique(chance.email, numUsers)
+// const userIds = chance.unique(chance.integer, numUsers, { min: 1, max: 50 })
+// const productIds = chance.unique(chance.integer, numProducts, { min: 1, max: 100 })
+// const orderIds = chance.unique(chance.integer, numCartsOrders, { min: 1, max: 50 })
+// console.log(CartOrderIds)
+const category = ['mask', 'sanitizer', 'face-shield']
+
+// helper function
+// takes in a number of users we want and a callback function (random user or random product)
+function doTimes(n, fn) {
+  const results = []
+  while (n--) {
+    results.push(fn())
+  }
+  return results
+}
+
+function randImage() {
+  return GenerateImage({
+    w: 200,
+    h: 150,
+    t: 'diagonal',
+    c: 'No Image',
+    bc: chance.color(),
+    fc: chance.color({format: 'shorthex'})
+  })
+}
+
+// ===== generate singles =======
+function randUser() {
+  const gender = chance.gender()
+  return User.build({
+    // id: userIds.pop(),
+    firstName: chance.first({gender: gender}),
+    lastName: chance.last(),
+    phoneNumber: chance.phone(),
+    email: emails.pop(),
+    password: chance.word({syllables: 6}),
+    address: chance.address(),
+    isAdmin: chance.weighted([true, false], [5, 95])
+  })
+}
+
+function randProductName() {
+  const numWords = chance.natural({
+    min: 1,
+    max: 5
+  })
+  return chance
+    .sentence({words: numWords})
+    .replace(/\b\w/g, function(m) {
+      return m.toUpperCase()
     })
-  ])
+    .slice(0, -1)
+}
 
-  const products = await Promise.all([
-    Product.create({
+function randProduct() {
+  return Product.build({
+    // id: productIds.pop(),
+    name: randProductName(),
+    imageUrl: randImage(),
+    quantity: chance.integer({min: 1, max: 1000}),
+    description: chance.paragraph({sentences: 5}),
+    price: chance.integer({min: 1, max: 500}),
+    color: chance.color({format: 'shorthex'}),
+    category: chance.pickone(category)
+  })
+}
+
+function randOrder() {
+  return Order.build({
+    // id: orderIds.pop(),
+    userId: chance.integer({min: 1, max: 50}),
+    isComplete: chance.weighted([true, false], [50, 50])
+  })
+}
+
+function randCart() {
+  return OrderProducts.build({
+    orderId: chance.integer({min: 1, max: 50}),
+    productId: chance.integer({min: 1, max: 100}),
+    quantity: chance.integer({min: 1, max: 1000}),
+    price: chance.integer({min: null, max: 500})
+  })
+}
+
+// ===== generate multiple  =======
+function generateUsers() {
+  // const initial = []
+  const users = doTimes(numUsers, randUser)
+  users.push(
+    User.build({
+      // id: 1,
+      firstName: 'Zeke',
+      lastName: 'Nierenberg',
+      phone: '(510) 295-5523',
+      email: 'zeke@zeke.zeke',
+      password: 'abcdefg',
+      isAdmin: true
+    })
+  )
+  users.push(
+    User.build({
+      // id: 2,
+      firstName: 'Omri',
+      lastName: 'Bernstein',
+      phone: '(781) 854-8854',
+      email: 'omri@zeke.zeke',
+      password: 'abcdefg'
+    })
+  )
+
+  return users
+  // return initial.concat(users)
+}
+
+function generateProducts() {
+  // const initial = []
+  const products = doTimes(numProducts, randProduct)
+  products.push(
+    Product.build({
+      // id: 1,
       name: 'Cotton Facemask',
       price: 494,
       quantity: 55,
       category: 'mask',
       description:
-        'Facemask Cotton Face Mask With Filter Pocket PM2.5 Filter 2 Layer Washable Face Mask Reusable Mask'
-    }),
-    Product.create({
+        'Facemask Cotton Face Mask With Filter Pocket PM2.5 Filter 2 Layer Washable Face Mask Reusable Mask',
+      imageUrl:
+        'https://ih1.redbubble.net/image.1193579924.0976/ur,mask_three_quarter,tall_portrait,750x1000.jpg'
+    })
+  )
+
+  products.push(
+    Product.build({
+      // id: 2,
       name: 'Rainbow Sun Shield',
       price: 1699,
       quantity: 15,
@@ -69,8 +157,12 @@ async function seed() {
         'Sun visor UV Protection, Hat Cap, Rainbow Visor, Sun cap, Face Shield',
       imageUrl:
         'https://i.etsystatic.com/18717999/r/il/c67c2d/2487349479/il_794xN.2487349479_qr23.jpg'
-    }),
-    Product.create({
+    })
+  )
+
+  products.push(
+    Product.build({
+      // id: 3,
       name: 'Ladybug Faceshield',
       price: 1950,
       quantity: 40,
@@ -81,55 +173,55 @@ async function seed() {
       imageUrl:
         'https://i.etsystatic.com/22957671/r/il/9d0aec/2449990780/il_794xN.2449990780_3re3.jpg'
     })
-  ])
+  )
+  return products
+  // return initial.concat(products)
+}
 
-  const orders = await Promise.all([
-    Order.create({
-      id: 1,
-      userId: 1,
-      isComplete: true
-    }),
-    Order.create({
-      id: 2,
-      userId: 2,
-      isComplete: false
-    }),
-    Order.create({
-      id: 3,
-      userId: 1,
-      isComplete: false
-    })
-  ])
+function generateOrders() {
+  return doTimes(numCartsOrders, () => {
+    return randOrder()
+  })
+}
+function generateCarts() {
+  return doTimes(numCartsOrders, () => {
+    return randCart()
+  })
+}
 
-  const carts = await Promise.all([
-    OrderProducts.create({
-      orderId: 1,
-      productId: 1,
-      quantity: 1,
-      price: 494
-    }),
-    OrderProducts.create({
-      orderId: 1,
-      productId: 2,
-      quantity: 1,
-      price: 1699
-    }),
-    OrderProducts.create({
-      orderId: 2,
-      productId: 2,
-      quantity: 1
-    }),
-    OrderProducts.create({
-      orderId: 3,
-      productId: 1,
-      quantity: 2
-    }),
-    OrderProducts.create({
-      orderId: 3,
-      productId: 2,
-      quantity: 1
-    })
-  ])
+// ===== create and save the multiples in the database =======
+function createUsers() {
+  return Promise.map(generateUsers(), user => {
+    return user.save()
+  })
+}
+
+function createProducts() {
+  return Promise.map(generateProducts(), product => {
+    return product.save()
+  })
+}
+
+function createOrders() {
+  return Promise.map(generateOrders(), order => {
+    return order.save()
+  })
+}
+
+function createCarts() {
+  return Promise.map(generateCarts(), cart => {
+    return cart.save()
+  })
+}
+
+async function seed() {
+  await db.sync({force: true})
+  console.log('db synced!')
+
+  const users = await createUsers()
+  const products = await createProducts()
+  const orders = await createOrders()
+  const carts = await createCarts()
 
   console.log(`seeded ${users.length} users`)
   console.log(`seeding ${products.length} products successfully`)
