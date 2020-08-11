@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom'
 import {logout} from '../store'
 import {Nav, NavItem, NavLink} from 'react-bootstrap'
 import {cartNav} from './local-cart'
+import Badge from 'react-bootstrap/Badge'
 
 const Navbar = ({handleClick, isLoggedIn}) => {
   const total = cartNav()
@@ -15,15 +16,9 @@ const Navbar = ({handleClick, isLoggedIn}) => {
       <nav>
         {isLoggedIn ? (
           <div>
-            {/* <Link to="/home">Home</Link>
-          <Link to="/products">All Products</Link>
-          <Link to="/products/masks">Masks</Link>
-          <Link to="/products/faceshields">Face Shields</Link>
-          <Link to="/products/sanitizers">Sanitizers</Link> */}
-
-            <Nav variant="tabs" activeKey="/home">
+            <Nav variant="tabs" activeKey="/">
               <NavItem>
-                <NavLink href="/home">Home</NavLink>
+                <NavLink href="/">Home</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink eventKey="link-1" href="/products">
@@ -51,7 +46,7 @@ const Navbar = ({handleClick, isLoggedIn}) => {
                 </NavItem>
                 <NavItem>
                   <NavLink href="/cart" className="cart-nav">
-                    Cart (<span>{total}</span>)
+                    Cart <Badge variant="primary">{total}</Badge>
                   </NavLink>
                 </NavItem>
                 <NavItem>
@@ -67,7 +62,7 @@ const Navbar = ({handleClick, isLoggedIn}) => {
             {/* The navbar will show these links before you log in */}
             <Nav variant="tabs" activeKey="/home">
               <NavItem>
-                <NavLink href="/home">Home</NavLink>
+                <NavLink href="/">Home</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink eventKey="link-1" href="/products">
@@ -91,7 +86,7 @@ const Navbar = ({handleClick, isLoggedIn}) => {
               </NavItem>
               <NavItem>
                 <NavLink href="/cart" className="cart-nav">
-                  Cart (<span>{total}</span>)
+                  Cart <Badge variant="primary">{total}</Badge>
                 </NavLink>
               </NavItem>
               <NavItem>

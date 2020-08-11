@@ -21,3 +21,21 @@ nav a {
   color: white;
   margin-left: 1em;
 }
+
+.home-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sign-up {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

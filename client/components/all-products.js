@@ -3,11 +3,28 @@ import {connect} from 'react-redux'
 import {fetchProducts} from '../store/products'
 import SingleProductDetail from './single-product-details'
 import CardDeck from 'react-bootstrap/CardDeck'
-
+import ProdPagination from './pagination'
 /**
  * COMPONENT
  */
+
 export class AllProducts extends React.Component {
+  // constructor(props) {
+  //   super(props)
+  //    this.state = {
+  //      activePage :1
+  //     }
+
+  // }
+
+  // handlePageChange(pageNumber) {
+
+  // console.log(`active page is ${pageNumber}`);
+
+  // this.setState({activePage: pageNumber});
+
+  // }
+
   componentDidMount() {
     this.props.getProducts()
   }
@@ -25,6 +42,7 @@ export class AllProducts extends React.Component {
                   return <SingleProductDetail key={id} product={product} />
                 })
               : `We are currently out of stock of the products you are looking for.`}
+            {/* <ProdPagination products={products}/> */}
           </CardDeck>
         </div>
       </div>

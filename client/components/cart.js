@@ -5,6 +5,7 @@ import CardDeck from 'react-bootstrap/CardDeck'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import {fetchCart, checkoutCart} from '../store/cart'
+import PurchaseModal from './purchase-modal'
 
 /**
  * COMPONENT
@@ -33,8 +34,6 @@ const Cart = props => {
 
   const checkout = async () => {
     await props.order(cart)
-    alert('Your order is now being processed. Thank you!')
-    props.history.push('/products')
   }
 
   return (
@@ -55,9 +54,13 @@ const Cart = props => {
           </Container>
         </CardDeck>
         <Container className="d-flex justify-content-center">
-          <Button onClick={() => checkout()} className="mx-2" variant="primary">
-            Purchase
-          </Button>
+          {cart.length > 0 ? (
+            <PurchaseModal checkout={checkout} />
+          ) : (
+            <Button disabled style={{pointerEvents: 'none'}}>
+              Purchase
+            </Button>
+          )}
           <div className="total mx-2 align-self-center"> Total: ${total} </div>
         </Container>
       </div>
