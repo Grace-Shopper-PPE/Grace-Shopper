@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button'
 import {connect} from 'react-redux'
 import {incrementQuantity, addItem} from '../store/cart'
 import {addToLocalCart} from './local-cart'
+import RemoveEditProductBtn from './remove-edit-product-btn'
 /**
  * COMPONENT
  */
@@ -28,10 +29,8 @@ const SingleProductDetail = props => {
         Number(document.querySelector('.cart-nav span').textContent) + 1
     } else {
       addToLocalCart(id, name, price, imageUrl)
-
     }
   }
-
   const remove = productId => {
     removeProduct(productId)
   }
