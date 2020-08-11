@@ -4,11 +4,17 @@ const db = require('../db')
 const OrderProducts = db.define('orderProducts', {
   orderId: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
   },
   productId: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
   },
   price: {
     type: Sequelize.INTEGER,

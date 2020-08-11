@@ -7,9 +7,11 @@ import products from './products'
 import singleProduct from './single-product'
 import cart from './cart'
 import currentUser from './auth'
+import user from './single-user'
 
 const reducer = combineReducers({
   users,
+  user,
   currentUser,
   products,
   singleProduct,

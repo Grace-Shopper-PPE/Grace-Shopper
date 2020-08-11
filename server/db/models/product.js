@@ -20,17 +20,18 @@ const Product = db.define('product', {
     }
   },
   color: {
-    type: Sequelize.ENUM(
-      'red',
-      'orange',
-      'yellow',
-      'green',
-      'blue',
-      'purple',
-      'black',
-      'white',
-      'grey'
-    )
+    type: Sequelize.STRING
+    // ENUM(
+    //   'red',
+    //   'orange',
+    //   'yellow',
+    //   'green',
+    //   'blue',
+    //   'purple',
+    //   'black',
+    //   'white',
+    //   'grey'
+    // )
   },
   size: {
     type: Sequelize.ENUM('XS', 'S', 'M', 'L', 'XL')
