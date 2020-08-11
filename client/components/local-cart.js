@@ -27,8 +27,9 @@ export const addToLocalCart = (id, name, price, imageUrl) => {
 }
 
 export const cartNav = () => {
+  localStorage.setItem('CART', '')
   const localCart = localStorage.getItem('CART')
-  let cartArr = JSON.parse(localCart)
+  let cartArr = []
   const total = cartArr.reduce((accum, item) => accum + item.quantity, 0)
   return total
 }
