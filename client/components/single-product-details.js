@@ -6,6 +6,7 @@ import {incrementQuantity, addItem} from '../store/cart'
 import {deleteSingleProduct} from '../store/products'
 import RemoveEditProductBtn from './remove-edit-product-btn'
 import CartModal from './add-to-cart-modal'
+import {addToLocalCart} from './local-cart'
 /**
  * COMPONENT
  */
@@ -14,16 +15,27 @@ const SingleProductDetail = props => {
   const {id, name, price, imageUrl} = props.product
   const newPrice = (price / 100).toFixed(2)
   const productUrl = `/products/${id}`
+  const {removeProduct} = props
 
-  const addToCart = async id => {
-    const containsItem = props.cart.filter(item => {
-      return item.productId === id
-    })
-    if (containsItem.length) {
-      await props.add({id, inc: 'inc'})
+  const addToCart = async () => {
+    if (props.currentUser.id) {
+      const containsItem = props.cart.filter(item => {
+        return item.productId === id
+      })
+      if (containsItem.length) {
+        await props.add({id, inc: 'inc'})
+      } else {
+        await props.addNew({id})
+      }
+      document.querySelector('.cart-nav span').textContent =
+        Number(document.querySelector('.cart-nav span').textContent) + 1
     } else {
-      await props.addNew({id})
+      addToLocalCart(id, name, price, imageUrl)
     }
+  }
+
+  const remove = productId => {
+    removeProduct(productId)
   }
 
   return (
@@ -49,12 +61,14 @@ const SingleProductDetail = props => {
 }
 
 const mapState = state => ({
-  cart: state.cart
+  cart: state.cart,
+  currentUser: state.currentUser
 })
 
 const mapDispatch = dispatch => ({
   add: item => dispatch(incrementQuantity(item)),
-  addNew: id => dispatch(addItem(id))
+  addNew: id => dispatch(addItem(id)),
+  removeProduct: productId => dispatch(deleteSingleProduct(productId))
 })
 
 export default connect(mapState, mapDispatch)(SingleProductDetail)

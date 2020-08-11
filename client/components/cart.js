@@ -5,19 +5,33 @@ import CardDeck from 'react-bootstrap/CardDeck'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import {fetchCart, checkoutCart} from '../store/cart'
+
 import PurchaseModal from './purchase-modal'
 
 /**
  * COMPONENT
  */
 const Cart = props => {
-  const cart = props.cart
-  const total = (
-    cart.reduce(
-      (accum, cartItem) => accum + cartItem.product.price * cartItem.quantity,
-      0
-    ) / 100
-  ).toFixed(2)
+  let cart
+  let total
+
+  if (props.currentUser.id) {
+    cart = props.cart
+    total = (
+      cart.reduce(
+        (accum, cartItem) => accum + cartItem.product.price * cartItem.quantity,
+        0
+      ) / 100
+    ).toFixed(2)
+  } else {
+    cart = JSON.parse(localStorage.getItem('CART'))
+    total = (
+      cart.reduce(
+        (accum, cartItem) => accum + cartItem.price * cartItem.quantity,
+        0
+      ) / 100
+    ).toFixed(2)
+  }
 
   const checkout = async () => {
     await props.order(cart)
@@ -48,6 +62,7 @@ const Cart = props => {
               Purchase
             </Button>
           )}
+
           <div className="total mx-2 align-self-center"> Total: ${total} </div>
         </Container>
       </div>
@@ -56,7 +71,8 @@ const Cart = props => {
 }
 
 const mapState = state => ({
-  cart: state.cart
+  cart: state.cart,
+  currentUser: state.currentUser
 })
 
 const mapDispatch = dispatch => ({

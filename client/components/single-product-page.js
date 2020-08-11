@@ -48,6 +48,7 @@ export class SingleProductPage extends React.Component {
                         <Button variant="primary">Add To Cart</Button>
                       </Col>
                       {/* <CartModal {...this.props} /> */}
+
                       <RemoveEditProductBtn id={id} remove={this.remove} />
                     </Row>
                   </Card.Body>

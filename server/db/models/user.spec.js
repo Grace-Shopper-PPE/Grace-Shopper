@@ -1,8 +1,9 @@
 /* global describe beforeEach it */
 
 const {expect} = require('chai')
-const db = require('../index')
-const User = db.model('user')
+const db = require('../db')
+const {User, Order} = require('./index')
+const seed = require('../../../script/seed')
 
 describe('User model', () => {
   beforeEach(() => {
@@ -59,4 +60,15 @@ describe('User model', () => {
       })
     }) // end describe('correctPassword')
   }) // end describe('instanceMethods')
+  describe('Model associations', () => {
+    it('a user may have many orders', async () => {
+      const sallysCampus = await student1.getCampus()
+      expect(sallysCampus.name).to.equal(campus.name)
+    })
+
+    it('a campus may have many enrolled students', async () => {
+      const result = await campus.hasStudents([student1, student2])
+      expect(result).to.be.equal(true)
+    })
+  })
 }) // end describe('User model')

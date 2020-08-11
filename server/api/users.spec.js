@@ -77,26 +77,33 @@ describe('User routes', () => {
       })
     }) // end describe('User routes')
 
-    describe('DELETE /api/users', async () => {
-      xit('If the user is an admin, they can delete a user', async () => {
-        await request(app)
-          .auth('cody@email.com', '123456')
-          .delete(`api/users/${cody.id}`)
-
-          .expect(204)
-
-        const checkCody = await User.findByPk(cody.id)
-        expect(checkCody).to.equal(null)
+    it('DELETE /api/users', async () => {
+      let cody = User.create({
+        email: 'new_emaiL@gmail.com',
+        firstName: 'Cody',
+        lastName: 'Dog',
+        isAdmin: true
       })
 
-      it('If the user is not an admin, they cannot delete a user', async () => {
-        await request(app)
-          .delete('/api/users/1')
-          .expect(401)
-
-        const checkCody = await User.findByPk(cody.id)
-        expect(checkCody).to.equal(checkCody)
+      let lu = User.create({
+        email: 'lulu@gmail.com',
+        firstName: 'Lu',
+        lastName: 'Wang',
+        isAdmin: false
       })
+      await request(app)
+        .delete('/api/users/2')
+        .expect(204)
+
+      await request(app)
+        .delete('/api/users/1')
+        .expect(401)
+
+      const checkLu = await User.findByPk(lu.id)
+      expect(checkLu).to.equal(null)
+
+      const checkCody = await User.findByPk(cody.id)
+      expect(checkCody).to.equal(checkCody)
     })
   })
 })
