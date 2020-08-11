@@ -89,6 +89,8 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case GET_CART:
       return action.cart
+    case ADD_NEW_TO_CART:
+      return [...state, action.newItem]
     case INCREMENT_CART: {
       state.forEach(cartItem => {
         if (cartItem.productId === action.updatedItem.productId) {
@@ -111,6 +113,8 @@ export default function(state = initialState, action) {
       )
       return newState
     }
+    case PLACE_ORDER:
+      return initialState
     default:
       return state
   }

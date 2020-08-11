@@ -19,12 +19,20 @@ import {
   ProductAdd
 } from './components'
 import {me} from './store'
+import {fetchCart} from './store/cart'
+
 /**
  * COMPONENT
  */
 class Routes extends Component {
   componentDidMount() {
     this.props.loadInitialData()
+    this.props.loadCart()
+    // window.localStorage.removeItem('CART')
+    const CART = window.localStorage.getItem('CART')
+    if (!CART) {
+      window.localStorage.setItem('CART', '')
+    }
   }
 
   render() {
@@ -85,14 +93,17 @@ const mapState = state => {
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
     // conerced to boolean from the id number
     isLoggedIn: !!state.currentUser.id,
-    isAdmin: !!state.currentUser.isAdmin
+    isAdmin: !!state.currentUser.isAdmin,
+    cart: state.cart,
+    currentUser: state.currentUser
   }
 }
 
 const mapDispatch = dispatch => ({
   loadInitialData: () => {
     dispatch(me())
-  }
+  },
+  loadCart: () => dispatch(fetchCart())
 })
 
 // The `withRouter` wrapper makes sure that updates are not blocked
