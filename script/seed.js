@@ -124,7 +124,6 @@ function generateUsers() {
       password: 'abcdefg'
     })
   )
-
   return users
   // return initial.concat(users)
 }
@@ -134,7 +133,6 @@ function generateProducts() {
   const products = doTimes(numProducts, randProduct)
   products.push(
     Product.build({
-      // id: 1,
       name: 'Cotton Facemask',
       price: 494,
       quantity: 55,
@@ -148,7 +146,6 @@ function generateProducts() {
 
   products.push(
     Product.build({
-      // id: 2,
       name: 'Rainbow Sun Shield',
       price: 1699,
       quantity: 15,
