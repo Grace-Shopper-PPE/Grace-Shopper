@@ -16,12 +16,13 @@ const Navbar = props => {
     console.log('total', total)
 
     document.querySelector('.cart-nav span').textContent = total
-  } else {
-    let total = cartNav()
-    console.log('tot', total)
-    // document.querySelector('.cart-nav span').textContent = total
-    console.log(document.querySelector('.cart-nav span'))
   }
+  // else {
+  //   let total = cartNav()
+  //   console.log('tot', total)
+  //   // document.querySelector('.cart-nav span').textContent = total
+  //   console.log(document.querySelector('.cart-nav span'))
+  // }
 
   return (
     <div>
