@@ -2,6 +2,7 @@ export const addToLocalCart = (id, name, price, imageUrl) => {
   let localCart = localStorage.getItem('CART')
 
   if (!localCart) {
+    console.log('empty local')
     const newCartItem = [{productId: id, name, quantity: 1, price, imageUrl}]
     localStorage.setItem('CART', JSON.stringify(newCartItem))
   } else {
@@ -27,9 +28,11 @@ export const addToLocalCart = (id, name, price, imageUrl) => {
 }
 
 export const cartNav = () => {
-  localStorage.setItem('CART', '')
   const localCart = localStorage.getItem('CART')
-  let cartArr = []
-  const total = cartArr.reduce((accum, item) => accum + item.quantity, 0)
+
+  let arr = JSON.parse(localCart)
+  let total = arr.reduce((accum, item) => accum + item.quantity, 0)
+  total = JSON.stringify(total)
+  console.log('tot2:', total)
   return total
 }

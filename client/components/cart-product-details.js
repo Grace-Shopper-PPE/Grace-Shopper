@@ -9,13 +9,15 @@ import {incrementQuantity, decrementQuantity, deleteItem} from '../store/cart'
 import {addToLocalCart} from './local-cart'
 
 const CartProductDetail = props => {
-  const {product, quantity, productId, name, price, imageUrl} = props.product
+  console.log('props2', props.product)
+  const {product, orderId, quantity} = props.product
+  const {id, name, price, imageUrl} = product
   const newPrice = (price / 100).toFixed(2)
 
   // find alt way to pull max quant for local cart
   const maxQuant = 100
 
-  const increment = async id => {
+  const increment = async () => {
     if (props.currentUser.id) {
       await props.increase({id, inc: 'inc'})
       document.querySelector('.cart-nav span').textContent =
@@ -26,7 +28,7 @@ const CartProductDetail = props => {
     }
   }
 
-  const decrement = async id => {
+  const decrement = async () => {
     if (props.currentUser.id) {
       if (quantity > 1) {
         await props.decrease({id, dec: 'dec'})
@@ -39,7 +41,7 @@ const CartProductDetail = props => {
     }
   }
 
-  const removeItem = async id => {
+  const removeItem = async () => {
     if (props.currentUser.id) {
       await props.remove(id)
       props.loadCart()
@@ -61,10 +63,7 @@ const CartProductDetail = props => {
                   <Card.Text className="my-3">${newPrice}</Card.Text>
                   <Row className="d-flex flex-wrap">
                     <Row className="mx-3">
-                      <Button
-                        onClick={() => decrement(productId)}
-                        variant="primary"
-                      >
+                      <Button onClick={() => decrement()} variant="primary">
                         -
                       </Button>
                       <div className="align-self-center mx-2">
@@ -74,7 +73,7 @@ const CartProductDetail = props => {
                         variant="primary"
                         onClick={() => {
                           quantity < maxQuant
-                            ? increment(productId)
+                            ? increment()
                             : alert(
                                 'Sorry, you have reached the maximum quantity available for purchase'
                               )
@@ -84,10 +83,7 @@ const CartProductDetail = props => {
                       </Button>
                     </Row>
 
-                    <Button
-                      onClick={() => removeItem(productId)}
-                      variant="primary"
-                    >
+                    <Button onClick={() => removeItem()} variant="primary">
                       Remove
                     </Button>
                   </Row>

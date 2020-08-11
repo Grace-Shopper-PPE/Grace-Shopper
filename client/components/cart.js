@@ -9,60 +9,61 @@ import {fetchCart, checkoutCart} from '../store/cart'
 /**
  * COMPONENT
  */
-const Cart = props => {
-  let cart
-  let total
+class Cart extends React.Component {
+  constructor() {
+    super()
+    this.checkout = this.checkout.bind(this)
+  }
 
-  if (props.currentUser.id) {
-    cart = props.cart
-    total = (
+  async checkout() {
+    await this.props.order(cart)
+    alert('Your order is now being processed. Thank you!')
+    props.history.push('/products')
+  }
+
+  render() {
+    let cart = this.props.cart
+    let total = (
       cart.reduce(
         (accum, cartItem) => accum + cartItem.product.price * cartItem.quantity,
         0
       ) / 100
     ).toFixed(2)
-  } else {
-    cart = JSON.parse(localStorage.getItem('CART'))
-    total = (
-      cart.reduce(
-        (accum, cartItem) => accum + cartItem.price * cartItem.quantity,
-        0
-      ) / 100
-    ).toFixed(2)
-  }
 
-  const checkout = async () => {
-    await props.order(cart)
-    alert('Your order is now being processed. Thank you!')
-    props.history.push('/products')
-  }
-
-  return (
-    <div>
-      <h3>Welcome to your Cart page</h3>
-      <div className="d-flex flex-column">
-        <CardDeck>
-          <Container>
-            {cart.length > 0
-              ? cart.map(product => (
-                  <CartProductDetail
-                    key={product.productId}
-                    product={product}
-                    loadCart={props.loadCart}
-                  />
-                ))
-              : `Your cart is currently empty`}
+    return (
+      <div>
+        <h3>Welcome to your Cart page</h3>
+        <div className="d-flex flex-column">
+          <CardDeck>
+            <Container>
+              {cart.length > 0
+                ? cart.map(product => (
+                    <CartProductDetail
+                      key={product.productId}
+                      product={product}
+                      loadCart={this.props.loadCart}
+                    />
+                  ))
+                : `Your cart is currently empty`}
+            </Container>
+          </CardDeck>
+          <Container className="d-flex justify-content-center">
+            <Button
+              onClick={() => this.checkout()}
+              className="mx-2"
+              variant="primary"
+            >
+              Purchase
+            </Button>
+            <div className="total mx-2 align-self-center">
+              {' '}
+              Total: ${total}{' '}
+            </div>
           </Container>
-        </CardDeck>
-        <Container className="d-flex justify-content-center">
-          <Button onClick={() => checkout()} className="mx-2" variant="primary">
-            Purchase
-          </Button>
-          <div className="total mx-2 align-self-center"> Total: ${total} </div>
-        </Container>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 const mapState = state => ({
