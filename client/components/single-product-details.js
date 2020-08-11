@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import {incrementQuantity, addItem} from '../store/cart'
 import {addToLocalCart} from './local-cart'
 import RemoveEditProductBtn from './remove-edit-product-btn'
+import CartModal from './add-to-cart-modal'
 /**
  * COMPONENT
  */
@@ -40,11 +41,19 @@ const SingleProductDetail = props => {
       <Card style={{width: '18rem'}}>
         <Card.Img variant="top" src={imageUrl} />
         <Card.Body>
-          <Card.Title>{name}</Card.Title>
+          <a href={`/products/${id}`}>
+            <Card.Title>{name}</Card.Title>
+          </a>
           <Card.Text>${newPrice}</Card.Text>
-          <Button onClick={() => addToCart()} variant="primary">
+          {/* <Button onClick={() => addToCart()} variant="primary">
             Add To Cart
-          </Button>
+          </Button> */}
+          <CartModal
+            name={name}
+            id={id}
+            newPrice={newPrice}
+            addToCart={addToCart}
+          />
           <RemoveEditProductBtn id={id} remove={remove} />
         </Card.Body>
       </Card>

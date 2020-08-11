@@ -35,7 +35,7 @@ class Routes extends Component {
     //   console.log('no user logged in')
     // }
     // kept in for now because if statement isnt working properly
-    // await this.props.loadCart()
+
   }
 
   render() {
@@ -49,6 +49,7 @@ class Routes extends Component {
         <Route exact path="/products/add" component={ProductAdd} />
 
         <Route exact path="/products/masks" component={AllMasks} />
+        <Route exact path="/products/add" component={ProductAdd} />
         <Route exact path="/products/faceshields" component={AllFaceshields} />
         <Route exact path="/products/sanitizers" component={AllSanitizers} />
         <Route exact path="/products/:id" component={SingleProductPage} />
@@ -57,7 +58,7 @@ class Routes extends Component {
           !isAdmin && (
             <>
               {/* Routes placed here are only available after logging in */}
-              <Route path="/home" component={UserHome} />
+              <Route exact path="/" component={UserHome} />
               <Route exact path="/profile" component={MyProfile} />
             </>
           )}
@@ -66,7 +67,7 @@ class Routes extends Component {
           isAdmin && (
             <>
               {/* Routes placed here are only available for admins after logging in*/}
-              <Route path="/home" component={UserHome} />
+              <Route exact path="/" component={UserHome} />
               <Route exact path="/profile" component={MyProfile} />
               <Route exact path="/users" component={AllUsers} />
               <Route exact path="/users/:id" component={SingleUser} />
@@ -79,7 +80,7 @@ class Routes extends Component {
           )}
 
         {/* Displays our Login component as a fallback */}
-        <Route component={Login} />
+        <Route component={UserHome} />
       </Switch>
     )
   }

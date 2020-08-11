@@ -7,8 +7,12 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
 import RemoveEditProductBtn from './remove-edit-product-btn'
+
 import {incrementQuantity, addItem} from '../store/cart'
 import {addToLocalCart} from './local-cart'
+import {addToCart} from './single-product-details'
+import CartModal from './add-to-cart-modal'
+
 
 /**
  * COMPONENT
@@ -67,14 +71,13 @@ export class SingleProductPage extends React.Component {
                     <Card.Text>{description}</Card.Text>
                     <Row>
                       <Col>
-                        <Button
-                          onClick={() =>
-                            this.addToCart(id, name, price, imageUrl)
-                          }
-                          variant="primary"
-                        >
-                          Add To Cart
-                        </Button>
+
+                        <CartModal
+                          name={name}
+                          id={id}
+                          newPrice={newPrice}
+                          addToCart={this.addToCart}
+                        />
                       </Col>
 
                       <RemoveEditProductBtn id={id} remove={this.remove} />
