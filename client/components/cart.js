@@ -10,13 +10,26 @@ import {fetchCart, checkoutCart} from '../store/cart'
  * COMPONENT
  */
 const Cart = props => {
-  const cart = props.cart
-  const total = (
-    cart.reduce(
-      (accum, cartItem) => accum + cartItem.product.price * cartItem.quantity,
-      0
-    ) / 100
-  ).toFixed(2)
+  let cart
+  let total
+
+  if (props.currentUser.id) {
+    cart = props.cart
+    total = (
+      cart.reduce(
+        (accum, cartItem) => accum + cartItem.product.price * cartItem.quantity,
+        0
+      ) / 100
+    ).toFixed(2)
+  } else {
+    cart = JSON.parse(localStorage.getItem('CART'))
+    total = (
+      cart.reduce(
+        (accum, cartItem) => accum + cartItem.price * cartItem.quantity,
+        0
+      ) / 100
+    ).toFixed(2)
+  }
 
   const checkout = async () => {
     await props.order(cart)
@@ -53,7 +66,8 @@ const Cart = props => {
 }
 
 const mapState = state => ({
-  cart: state.cart
+  cart: state.cart,
+  currentUser: state.currentUser
 })
 
 const mapDispatch = dispatch => ({

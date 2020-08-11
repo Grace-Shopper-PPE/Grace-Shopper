@@ -3,8 +3,7 @@ import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import {connect} from 'react-redux'
 import {incrementQuantity, addItem} from '../store/cart'
-import {deleteSingleProduct} from '../store/products'
-import RemoveEditProductBtn from './remove-edit-product-btn'
+import {addToLocalCart} from './local-cart'
 /**
  * COMPONENT
  */
@@ -14,14 +13,20 @@ const SingleProductDetail = props => {
   const newPrice = (price / 100).toFixed(2)
   const productUrl = `/products/${id}`
 
-  const addToCart = async id => {
-    const containsItem = props.cart.filter(item => {
-      return item.productId === id
-    })
-    if (containsItem.length) {
-      await props.add({id, inc: 'inc'})
+  const addToCart = async () => {
+    if (props.currentUser.id) {
+      const containsItem = props.cart.filter(item => {
+        return item.productId === id
+      })
+      if (containsItem.length) {
+        await props.add({id, inc: 'inc'})
+      } else {
+        await props.addNew({id})
+      }
+      document.querySelector('.cart-nav span').textContent =
+        Number(document.querySelector('.cart-nav span').textContent) + 1
     } else {
-      await props.addNew({id})
+      addToLocalCart(id, name, price, imageUrl)
     }
   }
 
@@ -32,7 +37,7 @@ const SingleProductDetail = props => {
         <Card.Body>
           <Card.Title>{name}</Card.Title>
           <Card.Text>${newPrice}</Card.Text>
-          <Button onClick={() => addToCart(id)} variant="primary">
+          <Button onClick={() => addToCart()} variant="primary">
             Add To Cart
           </Button>
         </Card.Body>
@@ -42,7 +47,8 @@ const SingleProductDetail = props => {
 }
 
 const mapState = state => ({
-  cart: state.cart
+  cart: state.cart,
+  currentUser: state.currentUser
 })
 
 const mapDispatch = dispatch => ({
