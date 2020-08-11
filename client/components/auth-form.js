@@ -6,6 +6,8 @@ import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import {Form, Col, Row} from 'react-bootstrap'
+import LoginForm from './login-form'
+import SignUpForm from './sign-up-form'
 /**
  * COMPONENT
  */
@@ -13,92 +15,9 @@ const AuthForm = props => {
   const {name, displayName, handleSubmit, error} = props
 
   if (name === 'login') {
-    return (
-      <div>
-        <Form onSubmit={handleSubmit} name={name}>
-          <div>
-            <label htmlFor="email">
-              <InputGroup className="mb-3" name="email">
-                <InputGroup.Prepend>
-                  <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
-                </InputGroup.Prepend>
-                <FormControl
-                  placeholder="Email"
-                  aria-label="email"
-                  name="email"
-                  aria-describedby="basic-addon1"
-                  type="email"
-                />
-              </InputGroup>
-            </label>
-          </div>
-          <div>
-            <label htmlFor="password">
-              <InputGroup className="mb-3" name="password">
-                <InputGroup.Prepend>
-                  <InputGroup.Text id="basic-addon1">+</InputGroup.Text>
-                </InputGroup.Prepend>
-                <FormControl
-                  placeholder="Password"
-                  aria-label="password"
-                  name="password"
-                  aria-describedby="basic-addon1"
-                  type="password"
-                />
-              </InputGroup>
-            </label>
-          </div>
-          <div>
-            <Button type="submit">{displayName}</Button>
-          </div>
-          {error && error.response && <div> {error.response.data} </div>}
-        </Form>
-        <a href="/auth/google">{displayName} with Google</a>
-      </div>
-    )
+    return <LoginForm {...props} />
   } else {
-    return (
-      <div>
-        <Form onSubmit={handleSubmit} name={name}>
-          <Form.Row>
-            <Form.Group as={Col}>
-              <Form.Label>First Name</Form.Label>
-              <Form.Control type="text" name="first" placeholder="First Name" />
-            </Form.Group>
-
-            <Form.Group as={Col}>
-              <Form.Label>Last Name</Form.Label>
-              <Form.Control type="text" name="last" placeholder="Last Name" />
-            </Form.Group>
-          </Form.Row>
-          <Form.Row>
-            <Form.Group as={Col}>
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                name="email"
-                placeholder="Enter email"
-              />
-            </Form.Group>
-
-            <Form.Group as={Col}>
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                name="password"
-                placeholder="Password"
-              />
-            </Form.Group>
-          </Form.Row>
-
-          <div>
-            <Button type="submit">{displayName}</Button>
-          </div>
-          {error && error.response && <div> {error.response.data} </div>}
-        </Form>
-        <a href="/auth/google">{displayName} with Google</a>
-      </div>
-    )
+    return <SignUpForm {...props} />
   }
 }
 

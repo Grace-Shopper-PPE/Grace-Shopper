@@ -58,7 +58,7 @@ class Routes extends Component {
           !isAdmin && (
             <>
               {/* Routes placed here are only available after logging in */}
-              <Route path="/home" component={UserHome} />
+              <Route exact path="/" component={UserHome} />
               <Route exact path="/profile" component={MyProfile} />
             </>
           )}
@@ -67,7 +67,7 @@ class Routes extends Component {
           isAdmin && (
             <>
               {/* Routes placed here are only available for admins after logging in*/}
-              <Route path="/home" component={UserHome} />
+              <Route exact path="/" component={UserHome} />
               <Route exact path="/profile" component={MyProfile} />
               <Route exact path="/users" component={AllUsers} />
               <Route exact path="/users/:id" component={SingleUser} />
@@ -80,7 +80,7 @@ class Routes extends Component {
           )}
 
         {/* Displays our Login component as a fallback */}
-        <Route component={Login} />
+        <Route component={UserHome} />
       </Switch>
     )
   }
