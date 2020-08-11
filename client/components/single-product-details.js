@@ -31,7 +31,6 @@ const SingleProductDetail = props => {
       addToLocalCart(id, name, price, imageUrl)
     }
   }
-
   const remove = productId => {
     removeProduct(productId)
   }
