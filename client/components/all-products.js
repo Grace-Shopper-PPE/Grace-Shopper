@@ -20,9 +20,10 @@ export class AllProducts extends React.Component {
         <div className="d-flex justify-content-center">
           <CardDeck>
             {products.length > 0
-              ? products.map(product => (
-                  <SingleProductDetail key={product.id} product={product} />
-                ))
+              ? products.map(product => {
+                  const {id} = product
+                  return <SingleProductDetail key={id} product={product} />
+                })
               : `We are currently out of stock of the products you are looking for.`}
           </CardDeck>
         </div>

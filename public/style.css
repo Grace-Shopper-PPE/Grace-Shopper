@@ -21,3 +21,9 @@ nav a {
   color: white;
   margin-left: 1em;
 }
+
+.home-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

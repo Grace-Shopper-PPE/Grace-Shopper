@@ -13,6 +13,12 @@ describe('User routes', () => {
 
   describe('/api/users/', () => {
     const codysEmail = 'cody@puppybook.com'
+    let isAdmin = true
+    let cody = {
+      email: codysEmail,
+      firstName: 'Cody',
+      lastName: 'Dog'
+    }
 
     beforeEach(() => {
       return User.create({
@@ -46,36 +52,51 @@ describe('User routes', () => {
       expect(createUser.email).to.be.equal(codysEmail)
     })
 
-    it('PUT /api/users', async () => {
-      // let cody = User.create({
-      //   email: codysEmail,
-      //   firstName: 'Cody',
-      //   lastName: 'Dog'
-      // })
-      await request(app)
-        .put('/api/users/1')
-        .send({
-          email: 'new_emaiL@gmail.com'
-        })
-        .expect(200)
+    describe('PUT /api/users', () => {
+      it('If the user is an admin, they can update a user', async () => {
+        await request(app)
+          .put(`api/users/${cody.id}`)
+          .auth(
+            'cody@email.com',
+            'aa3da86e73ebec62ef58091adada2a08dac6420e04177ceec2573b623d8ca983'
+          )
+          .expect(204)
 
-      const fetchCody = await User.findByPk(1)
-      expect(fetchCody.email).to.equal('new_emaiL@gmail.com')
-    }) // end describe('/api/users')
+        const fetchCody = await User.findByPk(1)
+        expect(fetchCody.email).to.equal('new_emaiL@gmail.com')
+      })
+
+      it('If the user is not an admin, they cannot update a user', async () => {
+        await request(app)
+          .put('/api/users/1')
+
+          .expect(401)
+
+        const fetchCody = await User.findByPk(1)
+        expect(fetchCody.email).to.equal(codysEmail)
+      })
+    }) // end describe('User routes')
+
+    describe('DELETE /api/users', async () => {
+      xit('If the user is an admin, they can delete a user', async () => {
+        await request(app)
+          .auth('cody@email.com', '123456')
+          .delete(`api/users/${cody.id}`)
+
+          .expect(204)
+
+        const checkCody = await User.findByPk(cody.id)
+        expect(checkCody).to.equal(null)
+      })
+
+      it('If the user is not an admin, they cannot delete a user', async () => {
+        await request(app)
+          .delete('/api/users/1')
+          .expect(401)
+
+        const checkCody = await User.findByPk(cody.id)
+        expect(checkCody).to.equal(checkCody)
+      })
+    })
   })
-}) // end describe('User routes')
-
-it('DELETE /api/users', async () => {
-  let cody = User.create({
-    email: 'new_emaiL@gmail.com',
-    firstName: 'Cody',
-    lastName: 'Dog'
-  })
-  await request(app)
-    .delete('/api/users/1')
-    // .delete(`/api/users/${cody.id}`)
-    .expect(204)
-
-  const checkCody = await User.findByPk(cody.id)
-  expect(checkCody).to.equal(null)
-}) // end describe('/api/users')
+})

@@ -12,8 +12,6 @@ export class ProductAdd extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    const id = Number(this.props.match.params.id)
-    console.log(id, 'the id')
     const name = event.target.name.value
     const description = event.target.description.value
     const price = event.target.price.value

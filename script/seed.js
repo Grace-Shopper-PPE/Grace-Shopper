@@ -24,6 +24,30 @@ async function seed() {
       lastName: 'Murphy',
       phoneNumber: '(718)945-0832',
       address: '6952 Hillmeyer Ave, Arverne, NY, 11692'
+    }),
+    User.create({
+      email: 'johnson@gmail.com',
+      password: '123dfda',
+      firstName: 'Mike',
+      lastName: 'Johnson',
+      phoneNumber: '(254)853-9794',
+      address: '2627 Theresa Ln, Moody, TX, 76557'
+    }),
+    User.create({
+      email: 'd.smith@email.com',
+      password: '456454g',
+      firstName: 'Dennis',
+      lastName: 'Smith',
+      phoneNumber: 'unlisted',
+      address: '830 Ingalls Ave #334, Tribune, KS, 67879 '
+    }),
+    User.create({
+      email: 'cindy.j@email.com',
+      password: 'asfd4fag',
+      firstName: 'Cindy',
+      lastName: 'Johnson',
+      phoneNumber: '(916)687-0353',
+      address: 'Po Box 2098, Fair Oaks, CA, 95628'
     })
   ])
 
@@ -99,6 +123,11 @@ async function seed() {
       orderId: 3,
       productId: 1,
       quantity: 2
+    }),
+    OrderProducts.create({
+      orderId: 3,
+      productId: 2,
+      quantity: 1
     })
   ])
 

@@ -16,11 +16,11 @@ export const fetchCart = () => async dispatch => {
 
 // Add to cart
 const ADD_NEW_TO_CART = 'ADD_NEW_TO_CART'
-const addToCart = cart => ({type: ADD_NEW_TO_CART, cart})
+const addToCart = newItem => ({type: ADD_NEW_TO_CART, newItem})
 
-export const addItem = item => async dispatch => {
+export const addItem = id => async dispatch => {
   try {
-    const {data} = await axios.post('/api/cart', item)
+    const {data} = await axios.post('/api/cart', id)
     dispatch(addToCart(data))
   } catch (error) {
     console.error(error)
@@ -29,7 +29,7 @@ export const addItem = item => async dispatch => {
 
 // Increment cart
 const INCREMENT_CART = 'INCREMENT_CART'
-const incrementCart = cart => ({type: INCREMENT_CART, cart})
+const incrementCart = updatedItem => ({type: INCREMENT_CART, updatedItem})
 
 export const incrementQuantity = item => async dispatch => {
   try {
@@ -40,12 +40,77 @@ export const incrementQuantity = item => async dispatch => {
   }
 }
 
+// decrement cart
+const DECREMENT_CART = 'DECREMENT_CART'
+const decrementCart = updatedItem => ({type: DECREMENT_CART, updatedItem})
+
+export const decrementQuantity = item => async dispatch => {
+  try {
+    const {data} = await axios.put('/api/cart', item)
+    dispatch(decrementCart(data))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// delete from cart
+const DELETE_FROM_CART = 'DELETE_FROM_CART'
+const deletedFromCart = removedItemId => ({
+  type: DELETE_FROM_CART,
+  removedItemId
+})
+
+export const deleteItem = id => async dispatch => {
+  try {
+    await axios.delete(`/api/cart/${id}`)
+    dispatch(deletedFromCart(id))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// place order
+const PLACE_ORDER = 'PLACE_ORDER'
+const ordered = removedItemId => ({
+  type: PLACE_ORDER,
+  removedItemId
+})
+
+export const checkoutCart = cart => async dispatch => {
+  try {
+    const {data} = await axios.put('/api/order', cart)
+    dispatch(ordered())
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_CART:
       return action.cart
-    case INCREMENT_CART:
-      return action.cart
+    case INCREMENT_CART: {
+      state.forEach(cartItem => {
+        if (cartItem.productId === action.updatedItem.productId) {
+          cartItem.quantity = cartItem.quantity + 1
+        }
+      })
+      return state
+    }
+    case DECREMENT_CART: {
+      state.forEach(cartItem => {
+        if (cartItem.productId === action.updatedItem.productId) {
+          cartItem.quantity = cartItem.quantity - 1
+        }
+      })
+      return state
+    }
+    case DELETE_FROM_CART: {
+      const newState = state.filter(
+        cartItem => cartItem.productId !== action.removedItemId
+      )
+      return newState
+    }
     default:
       return state
   }

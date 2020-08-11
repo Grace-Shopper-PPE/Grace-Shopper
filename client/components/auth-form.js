@@ -27,6 +27,7 @@ const AuthForm = props => {
                   aria-label="email"
                   name="email"
                   aria-describedby="basic-addon1"
+                  type="email"
                 />
               </InputGroup>
             </label>
@@ -42,6 +43,7 @@ const AuthForm = props => {
                   aria-label="password"
                   name="password"
                   aria-describedby="basic-addon1"
+                  type="password"
                 />
               </InputGroup>
             </label>
