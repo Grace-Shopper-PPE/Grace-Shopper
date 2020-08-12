@@ -26,6 +26,7 @@ const Navbar = props => {
 
   return (
     <div>
+      <h1>PPEbay</h1>
       <nav>
         {isLoggedIn ? (
           <div>
@@ -72,6 +73,7 @@ const Navbar = props => {
           </div>
         ) : (
           <div>
+            <h1>PPEbay</h1>
             {/* The navbar will show these links before you log in */}
             <Nav variant="tabs" activeKey="/home">
               <NavItem>
