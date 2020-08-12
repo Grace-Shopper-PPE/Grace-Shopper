@@ -25,7 +25,9 @@ nav a {
 .home-page {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   justify-content: center;
+  flex-direction: column;
 }
 
 .sign-up {
@@ -38,4 +40,25 @@ nav a {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#trend {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+}
+
+footer {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: teal;
+  text-align: center;
+}
+
+footer a {
+  color: white;
 }
