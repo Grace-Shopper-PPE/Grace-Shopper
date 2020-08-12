@@ -108,7 +108,7 @@ function generateUsers() {
       // id: 1,
       firstName: 'Zeke',
       lastName: 'Nierenberg',
-      phone: '(510) 295-5523',
+      phoneNumber: '(510) 295-5523',
       email: 'zeke@zeke.zeke',
       password: 'abcdefg',
       isAdmin: true
@@ -119,7 +119,7 @@ function generateUsers() {
       // id: 2,
       firstName: 'Omri',
       lastName: 'Bernstein',
-      phone: '(781) 854-8854',
+      phoneNumber: '(781) 854-8854',
       email: 'omri@zeke.zeke',
       password: 'abcdefg'
     })
