@@ -131,7 +131,7 @@ function generateUsers() {
 function generateProducts() {
   // const initial = []
   const products = doTimes(numProducts, randProduct)
-  products.push(
+  products.unshift(
     Product.build({
       name: 'Cotton Facemask',
       price: 494,
@@ -144,7 +144,7 @@ function generateProducts() {
     })
   )
 
-  products.push(
+  products.unshift(
     Product.build({
       name: 'Rainbow Sun Shield',
       price: 1699,
@@ -157,7 +157,7 @@ function generateProducts() {
     })
   )
 
-  products.push(
+  products.unshift(
     Product.build({
       // id: 3,
       name: 'Ladybug Faceshield',
