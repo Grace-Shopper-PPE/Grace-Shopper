@@ -14,6 +14,10 @@ export const UserHome = props => {
     <div className="home-page">
       <div className="hp-items">
         <HomeCarousel email={email} />
+
+        <br />
+      </div>
+      <div className="current">
         <Trending />
       </div>
     </div>

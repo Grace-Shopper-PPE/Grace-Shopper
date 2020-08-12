@@ -42,7 +42,6 @@ const HomeCarousel = props => {
             <a href="/products/faceshields">
               <h3>Face Shields</h3>
             </a>
-            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item style={{height: '500px'}}>
@@ -57,7 +56,6 @@ const HomeCarousel = props => {
             <a href="/products/masks">
               <h3>Masks</h3>
             </a>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item style={{height: '500px'}}>
@@ -72,9 +70,6 @@ const HomeCarousel = props => {
             <a href="/products/sanitziers">
               <h3>Sanitziers</h3>
             </a>
-            <p>
-              Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-            </p>
           </Carousel.Caption>
         </Carousel.Item>
       </Carousel>
