@@ -26,7 +26,6 @@ const Navbar = props => {
 
   return (
     <div>
-      <h1>Grace Shopper PPE </h1>
       <nav>
         {isLoggedIn ? (
           <div>
