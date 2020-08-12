@@ -7,6 +7,9 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
 import RemoveEditProductBtn from './remove-edit-product-btn'
+
+import {incrementQuantity, addItem} from '../store/cart'
+import {addToLocalCart} from './local-cart'
 import {addToCart} from './single-product-details'
 import CartModal from './add-to-cart-modal'
 
@@ -17,6 +20,7 @@ export class SingleProductPage extends React.Component {
   constructor() {
     super()
     this.remove = this.remove.bind(this)
+    this.addToCart = this.addToCart.bind(this)
   }
 
   componentDidMount() {
@@ -27,6 +31,23 @@ export class SingleProductPage extends React.Component {
   async remove(productId) {
     await this.props.removeProduct(productId)
     this.props.history.push('/products')
+  }
+
+  addToCart = async (id, name, price, imageUrl) => {
+    if (this.props.currentUser.id) {
+      const containsItem = this.props.cart.filter(item => {
+        return item.productId === id
+      })
+      if (containsItem.length) {
+        await this.props.add({id, inc: 'inc'})
+      } else {
+        await this.props.addNew({id})
+      }
+      document.querySelector('.cart-nav span').textContent =
+        Number(document.querySelector('.cart-nav span').textContent) + 1
+    } else {
+      addToLocalCart(id, name, price, imageUrl)
+    }
   }
 
   render() {
@@ -71,12 +92,16 @@ export class SingleProductPage extends React.Component {
 }
 
 const mapState = state => ({
-  singleProduct: state.singleProduct
+  singleProduct: state.singleProduct,
+  cart: state.cart,
+  currentUser: state.currentUser
 })
 
 const mapDispatch = dispatch => ({
   getSingleProduct: productId => dispatch(fetchSingleProduct(productId)),
-  removeProduct: productId => dispatch(deleteSingleProduct(productId))
+  removeProduct: productId => dispatch(deleteSingleProduct(productId)),
+  add: item => dispatch(incrementQuantity(item)),
+  addNew: id => dispatch(addItem(id))
 })
 
 export default connect(mapState, mapDispatch)(SingleProductPage)
