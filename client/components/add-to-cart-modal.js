@@ -5,7 +5,6 @@ import Button from 'react-bootstrap/Button'
 const CartModal = props => {
   const [show, setShow] = useState(false)
   const {addToCart, id, name, newPrice} = props
-  console.log(props)
   const handleClose = () => setShow(false)
   const handleShow = () => {
     setShow(true)
