@@ -28,13 +28,7 @@ export class SingleUser extends Component {
     // console.log(this.props.currentUser)
     return (
       <div>
-        <User user={user} />
-        <button type="submit" onClick={() => updateUser(user.id)}>
-          Update User
-        </button>
-        <button type="submit" onClick={() => this.removeCallBack(user.id)}>
-          Remove User
-        </button>
+        <User user={user} removeCallBack={this.removeCallBack} />
       </div>
     )
   }

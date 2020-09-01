@@ -16,7 +16,8 @@ import {
   ProductUpdate,
   Cart,
   MyProfile,
-  ProductAdd
+  ProductAdd,
+  Navbar
 } from './components'
 import {me} from './store'
 import {fetchCart} from './store/cart'
@@ -40,47 +41,54 @@ class Routes extends Component {
   render() {
     const {isLoggedIn, isAdmin} = this.props
     return (
-      <Switch>
-        {/* Routes placed here are available to all visitors */}
-        <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
-        <Route exact path="/products" component={AllProducts} />
-        <Route exact path="/products/add" component={ProductAdd} />
+      <>
+        <Navbar />
+        <Switch>
+          {/* Routes placed here are available to all visitors */}
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={Signup} />
+          <Route exact path="/products" component={AllProducts} />
+          <Route exact path="/products/add" component={ProductAdd} />
 
-        <Route exact path="/products/masks" component={AllMasks} />
-        <Route exact path="/products/add" component={ProductAdd} />
-        <Route exact path="/products/faceshields" component={AllFaceshields} />
-        <Route exact path="/products/sanitizers" component={AllSanitizers} />
-        <Route exact path="/products/:id" component={SingleProductPage} />
-        <Route path="/cart" component={Cart} />
-        {isLoggedIn &&
-          !isAdmin && (
-            <>
-              {/* Routes placed here are only available after logging in */}
-              <Route exact path="/" component={UserHome} />
-              <Route exact path="/profile" component={MyProfile} />
-            </>
-          )}
+          <Route exact path="/products/masks" component={AllMasks} />
+          <Route exact path="/products/add" component={ProductAdd} />
+          <Route
+            exact
+            path="/products/faceshields"
+            component={AllFaceshields}
+          />
+          <Route exact path="/products/sanitizers" component={AllSanitizers} />
+          <Route exact path="/products/:id" component={SingleProductPage} />
+          <Route path="/cart" component={Cart} />
+          {isLoggedIn &&
+            !isAdmin && (
+              <>
+                {/* Routes placed here are only available after logging in */}
+                <Route exact path="/" component={UserHome} />
+                <Route exact path="/profile" component={MyProfile} />
+              </>
+            )}
 
-        {isLoggedIn &&
-          isAdmin && (
-            <>
-              {/* Routes placed here are only available for admins after logging in*/}
-              <Route exact path="/" component={UserHome} />
-              <Route exact path="/profile" component={MyProfile} />
-              <Route exact path="/users" component={AllUsers} />
-              <Route exact path="/users/:id" component={SingleUser} />
-              <Route
-                exact
-                path="/products/:id/edit"
-                component={ProductUpdate}
-              />
-            </>
-          )}
+          {isLoggedIn &&
+            isAdmin && (
+              <>
+                {/* Routes placed here are only available for admins after logging in*/}
+                <Route exact path="/" component={UserHome} />
+                <Route exact path="/profile" component={MyProfile} />
+                <Route exact path="/users" component={AllUsers} />
+                <Route exact path="/users/:id" component={SingleUser} />
+                <Route
+                  exact
+                  path="/products/:id/edit"
+                  component={ProductUpdate}
+                />
+              </>
+            )}
 
-        {/* Displays our Login component as a fallback */}
-        <Route component={UserHome} />
-      </Switch>
+          {/* Displays our Login component as a fallback */}
+          <Route component={UserHome} />
+        </Switch>
+      </>
     )
   }
 }

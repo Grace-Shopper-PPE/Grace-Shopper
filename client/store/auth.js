@@ -73,7 +73,7 @@ export const auth = (
 
   try {
     dispatch(setCurrentUser(res.data))
-    history.push('/home')
+    history.push('/')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }
