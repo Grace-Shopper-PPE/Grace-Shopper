@@ -6,16 +6,16 @@ import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
 import {connect} from 'react-redux'
 import {incrementQuantity, decrementQuantity, deleteItem} from '../store/cart'
-import {addToLocalCart} from './local-cart'
+import {
+  addToLocalCart,
+  decrementFromLocalCart,
+  removeFromLocalCart
+} from './local-cart'
 
 const CartProductDetail = props => {
-  console.log('props2', props.product)
-  const {product, orderId, quantity} = props.product
-  const {id, name, price, imageUrl} = product
+  const {product, quantity} = props.cartItem
+  const {id, name, price, imageUrl, quantity: maxQuant} = product
   const newPrice = (price / 100).toFixed(2)
-
-  // find alt way to pull max quant for local cart
-  const maxQuant = 100
 
   const increment = async () => {
     if (props.currentUser.id) {
@@ -24,7 +24,7 @@ const CartProductDetail = props => {
         Number(document.querySelector('.cart-nav span').textContent) + 1
       props.loadCart()
     } else {
-      addToLocalCart(id)
+      addToLocalCart(product)
     }
   }
 
@@ -38,6 +38,13 @@ const CartProductDetail = props => {
       document.querySelector('.cart-nav span').textContent =
         Number(document.querySelector('.cart-nav span').textContent) - 1
       props.loadCart()
+    }
+    if (!props.currentUser.id) {
+      if (quantity > 1) {
+        decrementFromLocalCart(product)
+      } else {
+        removeFromLocalCart(product)
+      }
     }
   }
 
