@@ -21,13 +21,26 @@ class Cart extends React.Component {
   }
 
   render() {
-    let cart = this.props.cart
-    let total = (
-      cart.reduce(
-        (accum, cartItem) => accum + cartItem.product.price * cartItem.quantity,
-        0
-      ) / 100
-    ).toFixed(2)
+    let cart
+    if (this.props.currentUser.id) {
+      cart = this.props.cart
+    } else {
+      let localCart = localStorage.getItem('CART')
+      cart = JSON.parse(localCart)
+    }
+    let total
+
+    if (cart) {
+      total = (
+        cart.reduce(
+          (accum, cartItem) =>
+            accum + cartItem.product.price * cartItem.quantity,
+          0
+        ) / 100
+      ).toFixed(2)
+    } else {
+      total = 0
+    }
 
     return (
       <div>
@@ -35,11 +48,11 @@ class Cart extends React.Component {
         <div className="d-flex flex-column">
           <CardDeck>
             <Container>
-              {cart.length > 0
-                ? cart.map(product => (
+              {cart
+                ? cart.map(cartItem => (
                     <CartProductDetail
-                      key={product.productId}
-                      product={product}
+                      key={cartItem.productId}
+                      cartItem={cartItem}
                       loadCart={this.props.loadCart}
                     />
                   ))
@@ -47,7 +60,7 @@ class Cart extends React.Component {
             </Container>
           </CardDeck>
           <Container className="d-flex justify-content-center">
-            {cart.length > 0 ? (
+            {cart ? (
               <PurchaseModal checkout={this.checkout} />
             ) : (
               <Button disabled style={{pointerEvents: 'none'}}>

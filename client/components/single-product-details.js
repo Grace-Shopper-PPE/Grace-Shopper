@@ -17,6 +17,7 @@ const SingleProductDetail = props => {
   const {removeProduct} = props
 
   const addToCart = () => {
+    // if user is logged in, check to see if the item already exists in their cart
     if (props.currentUser.id) {
       const containsItem = props.cart.filter(item => {
         return item.productId === id
@@ -26,10 +27,9 @@ const SingleProductDetail = props => {
       } else {
         props.addNew({id})
       }
-      // document.querySelector('.cart-nav span').textContent =
-      //   Number(document.querySelector('.cart-nav span').textContent) + 1
+      // if the user is not logged in, run local cart function
     } else {
-      addToLocalCart(id, name, price, imageUrl)
+      addToLocalCart(props.product)
     }
   }
   const remove = productId => {

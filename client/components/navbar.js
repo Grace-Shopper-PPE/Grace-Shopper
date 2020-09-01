@@ -9,20 +9,13 @@ import Badge from 'react-bootstrap/Badge'
 
 const Navbar = props => {
   const {isLoggedIn, handleClick, cart} = props
-  console.log('cart nav', cart)
 
   if (isLoggedIn) {
     let total = cart.reduce((accum, item) => accum + item.quantity, 0)
-    console.log('total', total)
-
     document.querySelector('.cart-nav span').textContent = total
+  } else {
+    cartNav()
   }
-  // else {
-  //   let total = cartNav()
-  //   console.log('tot', total)
-  //   // document.querySelector('.cart-nav span').textContent = total
-  //   console.log(document.querySelector('.cart-nav span'))
-  // }
 
   return (
     <div>
