@@ -1,17 +1,19 @@
 import axios from 'axios'
+import {UPDATE_USER} from './single-user'
+
 /**
  * ACTION TYPES
  */
 const GET_USERS = 'GET_USERS'
-export const REMOVE = 'REMOVE_USER'
-const CREATE = 'CREATE_USER'
+export const CREATE = 'CREATE_USER'
+export const REMOVE_USER = 'REMOVE_USER'
 
 /**
  * ACTION CREATORS
  */
 const getUsers = users => ({type: GET_USERS, users})
-const remove = id => ({type: REMOVE, id})
 export const create = user => ({type: CREATE, user})
+export const remove = id => ({type: REMOVE_USER, id})
 
 /**
  * THUNK CREATORS
@@ -52,8 +54,10 @@ export default function(users = [], action) {
       return action.users
     case CREATE:
       return [action.user, ...users]
-    case REMOVE:
+    case REMOVE_USER:
       return users.filter(user => user.id !== action.id)
+    case UPDATE_USER:
+      return [...users].map(user => user === action.user)
     default:
       return users
   }

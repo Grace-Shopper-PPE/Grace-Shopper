@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchSingleUser, removeUser} from '../store/single-user'
+import {fetchSingleUser} from '../store/single-user'
 import User from './user-page'
+import {removeUser} from '../store/users'
 
 /**
  * COMPONENT

@@ -1,17 +1,18 @@
 import axios from 'axios'
-import history from '../history'
+import {REMOVE_USER, CREATE} from './users'
 
 /**
  * ACTION TYPES
  */
 const GET_USER = 'GET_USER'
-export const REMOVE_USER = 'REMOVE_USER'
+export const UPDATE_USER = 'UPDATE_USER'
 
 /**
  * ACTION CREATORS
  */
 const getUser = user => ({type: GET_USER, user})
-const remove = id => ({type: REMOVE_USER, id})
+const updateUser = user => ({type: UPDATE_USER, user})
+
 /**
  * THUNK CREATORS
  */
@@ -24,13 +25,12 @@ export const fetchSingleUser = id => async dispatch => {
   }
 }
 
-export const removeUser = id => async dispatch => {
+export const updateSingleUser = (id, user) => async dispatch => {
   try {
-    await axios.delete(`/api/users/${id}`)
-    dispatch(remove(id))
-    history.push('/users')
+    const {data} = await axios.put(`/api/users/${id}`, user)
+    dispatch(updateUser(data))
   } catch (err) {
-    console.error(`Removing user: ${id} unsuccesful`, err)
+    console.log(`Retrieving user: ${id} unsuccesful`, err)
   }
 }
 
@@ -41,8 +41,12 @@ export default function(defaultUser = {}, action) {
   switch (action.type) {
     case GET_USER:
       return action.user
+    case CREATE:
+      return action.user
     case REMOVE_USER:
-      return defaultUser
+      return {}
+    case UPDATE_USER:
+      return action.user
     default:
       return defaultUser
   }
