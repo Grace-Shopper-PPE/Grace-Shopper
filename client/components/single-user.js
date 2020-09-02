@@ -25,7 +25,6 @@ export class SingleUser extends Component {
 
   render() {
     const {user} = this.props
-    // console.log(this.props.currentUser)
     return (
       <div>
         <User user={user} removeCallBack={this.removeCallBack} />
@@ -39,7 +38,7 @@ export class SingleUser extends Component {
 /**
  * CONTAINER
  */
-const mapState = ({currentUser, user}) => ({currentUser, user})
+const mapState = ({user}) => ({user})
 const mapDispatch = {fetchSingleUser, removeUser}
 
 export default connect(mapState, mapDispatch)(SingleUser)

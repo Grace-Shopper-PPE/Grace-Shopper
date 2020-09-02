@@ -23,7 +23,11 @@ export class AllUsers extends Component {
             const {id} = user
             return (
               <ul key={id}>
-                <UserDetail user={user} removeUser={this.props.removeUser} />
+                <UserDetail
+                  id={id}
+                  user={user}
+                  removeUser={this.props.removeUser}
+                />
               </ul>
             )
           })}

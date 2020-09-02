@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
+import {Link} from 'react-router-dom'
 
 /**
  * COMPONENT
@@ -11,7 +12,7 @@ import Container from 'react-bootstrap/Container'
 export class Profile extends Component {
   render() {
     const {currentUser} = this.props
-    const {firstName, lastName, email, address, phoneNumber} = currentUser
+    const {id, firstName, lastName, email, address, phoneNumber} = currentUser
     return (
       <div>
         <h3>My Profile</h3>
@@ -26,7 +27,18 @@ export class Profile extends Component {
                   <Card.Subtitle>{email}</Card.Subtitle>
                   <Card.Text>{address}</Card.Text>
                   <Card.Text>{phoneNumber}</Card.Text>
-                  <Row />
+                  <Row>
+                    <Col className="d-flex justify-content-end">
+                      <Link to={`/users/${id}/edit`}>
+                        <i
+                          className="fa fa-edit fa-2x"
+                          onClick={() => {
+                            console.log('clicked edit!')
+                          }}
+                        />
+                      </Link>
+                    </Col>
+                  </Row>
                 </Card.Body>
               </Col>
             </Row>

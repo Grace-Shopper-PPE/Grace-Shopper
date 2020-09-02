@@ -17,7 +17,8 @@ import {
   Cart,
   MyProfile,
   ProductAdd,
-  Navbar
+  Navbar,
+  UserUpdate
 } from './components'
 import {me} from './store'
 import {fetchCart} from './store/cart'
@@ -77,6 +78,7 @@ class Routes extends Component {
                 <Route exact path="/profile" component={MyProfile} />
                 <Route exact path="/users" component={AllUsers} />
                 <Route exact path="/users/:id" component={SingleUser} />
+                <Route exact path="/users/:id/edit" component={UserUpdate} />
                 <Route
                   exact
                   path="/products/:id/edit"

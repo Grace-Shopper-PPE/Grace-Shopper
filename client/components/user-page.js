@@ -28,13 +28,12 @@ export const User = props => {
                 <Row>
                   <Col className="d-flex justify-content-end">
                     <Link to={`/users/${id}/edit`}>
-                      {' '}
                       <i
                         className="fa fa-edit fa-2x"
                         onClick={() => {
                           console.log('clicked edit!')
                         }}
-                      />{' '}
+                      />
                     </Link>
                     <i
                       className="fa fa-trash fa-2x"
