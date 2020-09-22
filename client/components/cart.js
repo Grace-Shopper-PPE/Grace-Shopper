@@ -60,12 +60,10 @@ class Cart extends React.Component {
             </Container>
           </CardDeck>
           <Container className="d-flex justify-content-center">
-            {cart ? (
+            {cart && this.props.currentUser.id ? (
               <PurchaseModal checkout={this.checkout} />
             ) : (
-              <Button disabled style={{pointerEvents: 'none'}}>
-                Purchase
-              </Button>
+              <Button onClick={() => history.push('/signup')}>Purchase</Button>
             )}
             <div className="total mx-2 align-self-center">
               {' '}

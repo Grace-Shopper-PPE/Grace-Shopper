@@ -10,7 +10,6 @@ router.put('/', async (req, res, next) => {
         isComplete: false
       }
     })
-
     req.body.forEach(async cartItem => {
       const inventory = await Product.findByPk(cartItem.productId)
       inventory.update({quantity: inventory.quantity - cartItem.quantity})
