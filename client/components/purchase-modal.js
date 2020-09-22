@@ -32,7 +32,7 @@ const PurchaseModal = props => {
           </Button>
           <a href="/products">
             <Button variant="primary" onClick={handleClose}>
-              Go Back to Prodcuts
+              Go Back to Products
             </Button>
           </a>
         </Modal.Footer>

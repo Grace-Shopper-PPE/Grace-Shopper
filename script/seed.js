@@ -108,7 +108,7 @@ function generateUsers() {
       // id: 1,
       firstName: 'Zeke',
       lastName: 'Nierenberg',
-      phone: '(510) 295-5523',
+      phoneNumber: '(510) 295-5523',
       email: 'zeke@zeke.zeke',
       password: 'abcdefg',
       isAdmin: true
@@ -119,7 +119,7 @@ function generateUsers() {
       // id: 2,
       firstName: 'Omri',
       lastName: 'Bernstein',
-      phone: '(781) 854-8854',
+      phoneNumber: '(781) 854-8854',
       email: 'omri@zeke.zeke',
       password: 'abcdefg'
     })
@@ -131,7 +131,7 @@ function generateUsers() {
 function generateProducts() {
   // const initial = []
   const products = doTimes(numProducts, randProduct)
-  products.push(
+  products.unshift(
     Product.build({
       name: 'Cotton Facemask',
       price: 494,
@@ -144,7 +144,7 @@ function generateProducts() {
     })
   )
 
-  products.push(
+  products.unshift(
     Product.build({
       name: 'Rainbow Sun Shield',
       price: 1699,
@@ -157,7 +157,7 @@ function generateProducts() {
     })
   )
 
-  products.push(
+  products.unshift(
     Product.build({
       // id: 3,
       name: 'Ladybug Faceshield',

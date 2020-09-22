@@ -55,7 +55,7 @@ router.get('/', isAdminMiddleware, async (req, res, next) => {
       // explicitly select only the id and email fields - even though
       // users' passwords are encrypted, it won't help if we just
       // send everything to anyone who asks!
-      attributes: ['firstName', 'lastName', 'id', 'email']
+      attributes: ['firstName', 'lastName', 'id', 'email', 'phoneNumber']
     })
     res.json(users)
   } catch (err) {
@@ -66,11 +66,7 @@ router.get('/', isAdminMiddleware, async (req, res, next) => {
 router.get('/:id', isAdminMiddleware, async (req, res, next) => {
   try {
     const user = await req.requestedUser
-    if (user) {
-      res.json(user)
-    } else {
-      res.sendStatus(404)
-    }
+    res.json(user)
   } catch (err) {
     next(err)
   }

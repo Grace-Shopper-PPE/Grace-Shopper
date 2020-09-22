@@ -6,20 +6,15 @@ import {fetchCart} from './cart'
  * ACTION TYPES
  */
 
-const REMOVE_USER = 'REMOVE_USER'
-const GET_ME = 'GET_ME'
-
-/**
- * INITIAL STATE
- */
-const defaultUser = {}
+const REMOVE_CURRENT_USER = 'REMOVE_CURRENT_USER'
+const SET_CURRENT_USER = 'SET_CURRENT_USER'
 
 /**
  * ACTION CREATORS
  */
 
-const removeUser = () => ({type: REMOVE_USER})
-const getMe = user => ({type: GET_ME, user})
+const removeCurrentUser = () => ({type: REMOVE_CURRENT_USER})
+const setCurrentUser = user => ({type: SET_CURRENT_USER, user})
 
 /**
  * THUNK CREATORS
@@ -31,7 +26,7 @@ export const me = () => async dispatch => {
     if (res.data) {
       dispatch(fetchCart())
     }
-    dispatch(getMe(res.data || defaultUser))
+    dispatch(setCurrentUser(res.data || {}))
   } catch (err) {
     console.error(err)
   }
@@ -73,12 +68,12 @@ export const auth = (
       res = await axios.post(`/auth/${method}`, {email, password})
     }
   } catch (authError) {
-    return dispatch(getMe({error: authError}))
+    return dispatch(setCurrentUser({error: authError}))
   }
 
   try {
-    dispatch(getMe(res.data))
-    history.push('/home')
+    dispatch(setCurrentUser(res.data))
+    history.push('/')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }
@@ -86,8 +81,8 @@ export const auth = (
 
 export const logout = () => async dispatch => {
   try {
-    await axios.post('/auth/logout')
-    dispatch(removeUser())
+    await axios.delete('/auth/logout')
+    dispatch(removeCurrentUser())
     history.push('/login')
   } catch (err) {
     console.error(err)
@@ -97,12 +92,12 @@ export const logout = () => async dispatch => {
 /**
  * REDUCER
  */
-export default function(state = defaultUser, action) {
+export default function(state = {}, action) {
   switch (action.type) {
-    case GET_ME:
+    case SET_CURRENT_USER:
       return action.user
-    case REMOVE_USER:
-      return defaultUser
+    case REMOVE_CURRENT_USER:
+      return {}
     default:
       return state
   }
