@@ -14,28 +14,8 @@ export class MyProfile extends Component {
 
   render() {
     const {currentUser} = this.props
-    const admin = currentUser.isAdmin === true
 
-    return (
-      <>
-        {admin ? (
-          <div>
-            <Profile />
-            <Link to="/users">View All Users</Link>
-            <p>
-              <Link to="/products">View All Products</Link>
-            </p>
-          </div>
-        ) : (
-          <div>
-            <Profile />
-            <p>
-              <Link to="/products">View All Products</Link>
-            </p>
-          </div>
-        )}
-      </>
-    )
+    return <Profile currentUser={currentUser} />
   }
 }
 /**

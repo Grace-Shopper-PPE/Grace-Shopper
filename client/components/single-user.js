@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchSingleUser, removeUser} from '../store/single-user'
+import {fetchSingleUser} from '../store/single-user'
 import User from './user-page'
+import {removeUser} from '../store/users'
 
 /**
  * COMPONENT
@@ -24,16 +25,9 @@ export class SingleUser extends Component {
 
   render() {
     const {user} = this.props
-    // console.log(this.props.currentUser)
     return (
       <div>
-        <User user={user} />
-        <button type="submit" onClick={() => updateUser(user.id)}>
-          Update User
-        </button>
-        <button type="submit" onClick={() => this.removeCallBack(user.id)}>
-          Remove User
-        </button>
+        <User user={user} removeCallBack={this.removeCallBack} />
       </div>
     )
   }
@@ -44,7 +38,7 @@ export class SingleUser extends Component {
 /**
  * CONTAINER
  */
-const mapState = ({currentUser, user}) => ({currentUser, user})
+const mapState = ({user}) => ({user})
 const mapDispatch = {fetchSingleUser, removeUser}
 
 export default connect(mapState, mapDispatch)(SingleUser)

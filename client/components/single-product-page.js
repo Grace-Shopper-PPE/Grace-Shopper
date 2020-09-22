@@ -13,7 +13,6 @@ import {addToLocalCart} from './local-cart'
 import {addToCart} from './single-product-details'
 import CartModal from './add-to-cart-modal'
 
-
 /**
  * COMPONENT
  */
@@ -71,7 +70,6 @@ export class SingleProductPage extends React.Component {
                     <Card.Text>{description}</Card.Text>
                     <Row>
                       <Col>
-
                         <CartModal
                           name={name}
                           id={id}

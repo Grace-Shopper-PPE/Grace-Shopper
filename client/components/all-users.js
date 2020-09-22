@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {removeUser, fetchUsers} from '../store/users'
 import UserDetail from './user-detail'
+import CardDeck from 'react-bootstrap/CardDeck'
 
 /**
  * COMPONENT
@@ -12,22 +13,25 @@ export class AllUsers extends Component {
   }
 
   render() {
-    const {users, removeUser} = this.props
+    const {users} = this.props
 
     return (
       <div>
         <h3>All Users</h3>
-        {users.map(user => {
-          const {id} = user
-          return (
-            <ul key={id}>
-              <UserDetail user={user} />
-              <button type="submit" onClick={() => removeUser(id)}>
-                Remove User
-              </button>
-            </ul>
-          )
-        })}
+        <CardDeck>
+          {users.map(user => {
+            const {id} = user
+            return (
+              <ul key={id}>
+                <UserDetail
+                  id={id}
+                  user={user}
+                  removeUser={this.props.removeUser}
+                />
+              </ul>
+            )
+          })}
+        </CardDeck>
       </div>
     )
   }

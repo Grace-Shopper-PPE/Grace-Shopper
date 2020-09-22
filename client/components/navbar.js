@@ -5,7 +5,7 @@ import {logout} from '../store'
 import {Nav, NavItem, NavLink} from 'react-bootstrap'
 
 const Navbar = props => {
-  const {isLoggedIn, handleClick, cart} = props
+  const {isLoggedIn, handleClick, cart, currentUser} = props
 
   if (isLoggedIn) {
     let total = cart.reduce((accum, item) => accum + item.quantity, 0)
@@ -17,9 +17,9 @@ const Navbar = props => {
 
   return (
     <div>
-      <h1>Grace Shopper PPE </h1>
+      <h1>PPEbay</h1>
       <nav>
-        {isLoggedIn ? (
+        {isLoggedIn && currentUser.isAdmin === false ? (
           <div>
             <Nav variant="tabs" activeKey="/">
               <NavItem>
@@ -60,6 +60,52 @@ const Navbar = props => {
                   </NavLink>
                 </NavItem>
               </Nav>
+            </Nav>
+          </div>
+        ) : isLoggedIn && currentUser.isAdmin === true ? (
+          <div>
+            <Nav variant="tabs" activeKey="/">
+              <NavItem>
+                <NavLink href="/">Home</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink eventKey="link-1" href="/products">
+                  All Products
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink eventKey="link-2" href="/products/masks">
+                  Masks
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink eventKey="link-3" href="/products/faceshields">
+                  Face Shields
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink eventKey="link-4" href="/products/sanitizers">
+                  Sanitizers
+                </NavLink>
+              </NavItem>
+              {/* <Nav className="justify-content-end"> */}
+              <NavItem>
+                <NavLink href="/profile">Profile</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/cart" className="cart-nav">
+                  Cart (<span>0</span>)
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/users">All Users</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="#" onClick={handleClick}>
+                  Logout
+                </NavLink>
+              </NavItem>
+              {/* </Nav> */}
             </Nav>
           </div>
         ) : (
@@ -115,7 +161,8 @@ const Navbar = props => {
 const mapState = state => {
   return {
     isLoggedIn: !!state.currentUser.id,
-    cart: state.cart
+    cart: state.cart,
+    currentUser: state.currentUser
   }
 }
 
