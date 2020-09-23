@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {logout} from '../store'
 import {Nav, NavItem, NavLink} from 'react-bootstrap'
-import {cartNav} from './local-cart'
-import Badge from 'react-bootstrap/Badge'
 
 const Navbar = props => {
   const {isLoggedIn, handleClick, cart, currentUser} = props
@@ -12,9 +10,10 @@ const Navbar = props => {
   if (isLoggedIn) {
     let total = cart.reduce((accum, item) => accum + item.quantity, 0)
     document.querySelector('.cart-nav span').textContent = total
-  } else {
-    cartNav()
   }
+  // else {
+  // figure out how to update cart quantity when page loads
+  // }
 
   return (
     <div>

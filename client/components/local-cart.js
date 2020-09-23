@@ -63,9 +63,13 @@ export const decrementFromLocalCart = product => {
 export const removeFromLocalCart = product => {
   let localCart = localStorage.getItem('CART')
   let cartArr = JSON.parse(localCart)
-  cartArr.filter(item => item.productId !== product.id)
-
-  let cartString = JSON.stringify(cartArr)
+  let newCart = []
+  cartArr.filter(item => {
+    if (item.productId !== product.id) {
+      newCart.push(item)
+    }
+  })
+  let cartString = JSON.stringify(newCart)
   localStorage.setItem('CART', cartString)
 
   localCart = localStorage.getItem('CART')
@@ -74,10 +78,4 @@ export const removeFromLocalCart = product => {
     0
   )
   document.querySelector('.cart-nav span').textContent = cartSize
-}
-
-export const cartNav = () => {
-  const localCart = localStorage.getItem('CART')
-  // let cartSize = JSON.parse(localCart).reduce((accum, item) => accum + item.quantity, 0)
-  // document.querySelector('.cart-nav span').textContent = cartSize
 }

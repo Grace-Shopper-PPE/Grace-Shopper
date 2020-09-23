@@ -1,11 +1,6 @@
 import React from 'react'
-import {connect} from 'react-redux'
-import PropTypes from 'prop-types'
-import {auth} from '../store'
 import Button from 'react-bootstrap/Button'
-import InputGroup from 'react-bootstrap/InputGroup'
-import FormControl from 'react-bootstrap/FormControl'
-import {Form, Col, Row} from 'react-bootstrap'
+import {Form, Col} from 'react-bootstrap'
 /**
  * COMPONENT
  */

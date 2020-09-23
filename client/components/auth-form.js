@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {auth} from '../store'
+import {fetchCart} from '../store/cart'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
@@ -40,7 +41,8 @@ const mapSignup = state => {
   return {
     name: 'signup',
     displayName: 'Sign Up',
-    error: state.currentUser.error
+    error: state.currentUser.error,
+    cart: state.cart
   }
 }
 
@@ -55,6 +57,13 @@ const mapDispatch = dispatch => {
         const firstName = evt.target.first.value
         const lastName = evt.target.last.value
         dispatch(auth(email, password, firstName, lastName, formName))
+        let localCart = localStorage.getItem('CART')
+        if (localCart) {
+          const cartArr = JSON.parse(localCart)
+          // CREATE NEW CART FOR NEW USER
+          // ADD items to new cart
+          // remove items from local sotrage
+        }
       } else {
         dispatch(auth(email, password, null, null, formName))
       }

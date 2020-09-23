@@ -16,6 +16,7 @@ const CartProductDetail = props => {
   const {product, quantity} = props.cartItem
   const {id, name, price, imageUrl, quantity: maxQuant} = product
   const newPrice = (price / 100).toFixed(2)
+  const itemTotal = (newPrice * quantity).toFixed(2)
 
   const increment = async () => {
     if (props.currentUser.id) {
@@ -25,6 +26,8 @@ const CartProductDetail = props => {
       props.loadCart()
     } else {
       addToLocalCart(product)
+      location.reload()
+      return false
     }
   }
 
@@ -45,6 +48,8 @@ const CartProductDetail = props => {
       } else {
         removeFromLocalCart(product)
       }
+      location.reload()
+      return false
     }
   }
 
@@ -52,6 +57,11 @@ const CartProductDetail = props => {
     if (props.currentUser.id) {
       await props.remove(id)
       props.loadCart()
+    }
+    if (!props.currentUser.id) {
+      removeFromLocalCart(product)
+      location.reload()
+      return false
     }
   }
 
@@ -67,14 +77,19 @@ const CartProductDetail = props => {
               <Col>
                 <Card.Body>
                   <Card.Title className="my-3">{name}</Card.Title>
-                  <Card.Text className="my-3">${newPrice}</Card.Text>
+                  <Card.Text className="my-3">Price: ${newPrice}</Card.Text>
+                  <Card.Text className="my-3">Total: ${itemTotal}</Card.Text>
                   <Row className="d-flex flex-wrap">
                     <Row className="mx-3">
                       <Button onClick={() => decrement()} variant="primary">
                         -
                       </Button>
                       <div className="align-self-center mx-2">
-                        <Card.Text>Quantity: {quantity}</Card.Text>
+                        <div className="itemQuant">
+                          <Card.Text>
+                            Quantity: <span>{quantity}</span>
+                          </Card.Text>
+                        </div>
                       </div>
                       <Button
                         variant="primary"
@@ -89,7 +104,6 @@ const CartProductDetail = props => {
                         +
                       </Button>
                     </Row>
-
                     <Button onClick={() => removeItem()} variant="primary">
                       Remove
                     </Button>
