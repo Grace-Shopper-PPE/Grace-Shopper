@@ -21,8 +21,9 @@ class Cart extends React.Component {
     this.props.order(this.props.cart)
   }
 
-  createStripeSession() {
-    this.props.startPurchase()
+  async createStripeSession(cart) {
+    let stripeSession = await this.props.startPurchase(cart)
+    console.log('~~~~', stripeSession)
   }
 
   render() {
@@ -47,6 +48,8 @@ class Cart extends React.Component {
       total = 0
     }
 
+    let stripe = process.env.STRIPE_SECRET_KEY
+
     return (
       <div>
         <h3>Welcome to your Cart page</h3>
@@ -67,7 +70,7 @@ class Cart extends React.Component {
           <Container className="d-flex justify-content-center">
             {cart && this.props.currentUser.id ? (
               <Button onClick={() => this.createStripeSession(cart)}>
-                TEST BUTTON
+                BUTTON
               </Button>
             ) : (
               <Button onClick={() => history.push('/signup')}>Purchase</Button>

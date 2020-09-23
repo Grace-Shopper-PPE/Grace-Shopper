@@ -18,7 +18,8 @@ import {
   MyProfile,
   ProductAdd,
   Navbar,
-  UserUpdate
+  UserUpdate,
+  Success
 } from './components'
 import {me} from './store'
 import {fetchCart} from './store/cart'
@@ -61,6 +62,7 @@ class Routes extends Component {
           <Route exact path="/products/sanitizers" component={AllSanitizers} />
           <Route exact path="/products/:id" component={SingleProductPage} />
           <Route path="/cart" component={Cart} />
+          <Route path="/success" component={Success} />
           {isLoggedIn &&
             !isAdmin && (
               <>
