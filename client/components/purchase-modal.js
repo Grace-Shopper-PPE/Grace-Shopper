@@ -4,10 +4,10 @@ import Button from 'react-bootstrap/Button'
 
 const PurchaseModal = props => {
   const [show, setShow] = useState(false)
-  const {checkout} = props
+  // const {checkout} = props
   const handleClose = () => {
     setShow(false)
-    checkout()
+    // checkout()
   }
   const handleShow = () => {
     setShow(true)
