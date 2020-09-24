@@ -4,7 +4,7 @@ import CartProductDetail from './cart-product-details'
 import CardDeck from 'react-bootstrap/CardDeck'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
-import {fetchCart, checkoutCart, stripeCheckout} from '../store/cart'
+import {fetchCart, checkoutCart} from '../store/cart'
 import PurchaseModal from './purchase-modal'
 
 /**
@@ -14,15 +14,10 @@ class Cart extends React.Component {
   constructor() {
     super()
     this.checkout = this.checkout.bind(this)
-    this.createStripeSession = this.createStripeSession.bind(this)
   }
 
   checkout() {
     this.props.order(this.props.cart)
-  }
-
-  createStripeSession() {
-    this.props.startPurchase()
   }
 
   render() {
@@ -66,9 +61,7 @@ class Cart extends React.Component {
           </CardDeck>
           <Container className="d-flex justify-content-center">
             {cart && this.props.currentUser.id ? (
-              <Button onClick={() => this.createStripeSession(cart)}>
-                TEST BUTTON
-              </Button>
+              <PurchaseModal total={total} cart={cart} />
             ) : (
               <Button onClick={() => history.push('/signup')}>Purchase</Button>
             )}
@@ -89,9 +82,7 @@ const mapState = state => ({
 })
 
 const mapDispatch = dispatch => ({
-  loadCart: () => dispatch(fetchCart()),
-  order: cart => dispatch(checkoutCart(cart)),
-  startPurchase: cart => dispatch(stripeCheckout(cart))
+  loadCart: () => dispatch(fetchCart())
 })
 
 export default connect(mapState, mapDispatch)(Cart)
