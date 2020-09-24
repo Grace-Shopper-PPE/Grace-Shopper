@@ -1,23 +1,63 @@
 const router = require('express').Router()
 const {Order, OrderProducts, Product} = require('../db/models')
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 module.exports = router
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY
-const stripe = require('stripe')(stripeSecretKey)
+const {v4: uuid} = require('uuid')
 
-router.put('/', async (req, res, next) => {
+router.post('/', async (req, res, next) => {
+  let error
+  let status
   try {
-    const cart = await Order.findOne({
+    const {total, token} = req.body
+    const customer = await stripe.customers.create({
+      email: token.email,
+      source: token.id
+    })
+
+    const idempotencyKey = uuid()
+    const charge = await stripe.charges.create(
+      {
+        amount: total,
+        currency: 'usd',
+        customer: customer.id,
+        receipt_email: token.email,
+        description: 'Purchased',
+        shipping: {
+          name: token.card.name,
+          address: {
+            line1: token.card.address_line1,
+            city: token.card.address_city,
+            country: token.card.address_country,
+            postal_code: token.card.address_zip
+          }
+        }
+      },
+      {idempotencyKey}
+    )
+    status = 'success'
+  } catch (err) {
+    console.error('error:', err)
+    error = err
+    status = 'failure'
+  }
+  res.json({error, status})
+})
+
+router.post('/complete', async (req, res, next) => {
+  try {
+    const {cart} = req.body
+    const orderInfo = await Order.findOne({
       where: {
         userId: req.user.id,
         isComplete: false
       }
     })
-    req.body.forEach(async cartItem => {
+    cart.forEach(async cartItem => {
       const inventory = await Product.findByPk(cartItem.productId)
       inventory.update({quantity: inventory.quantity - cartItem.quantity})
     })
 
-    req.body.forEach(async cartItem => {
+    cart.forEach(async cartItem => {
       const order = await OrderProducts.findOne({
         where: {
           productId: cartItem.productId,
@@ -27,38 +67,9 @@ router.put('/', async (req, res, next) => {
       order.update({price: cartItem.product.price})
     })
 
-    cart.update({isComplete: true})
-    res.json(cart)
+    orderInfo.update({isComplete: true})
+    res.json(order.isComplete)
   } catch (error) {
-    next(error)
+    console.log(error)
   }
-})
-
-router.post('/checkout-session', async (req, res) => {
-  const {cart} = req.body
-  const stripeCart = cart.reduce((accum, item) => {
-    let stripeItem = {
-      price_data: {
-        currency: 'usd',
-        product_data: {
-          name: item.product.name,
-          images: [item.product.imageUrl]
-        },
-        unit_amount: item.product.quantity
-      },
-      quantity: item.quantity
-    }
-    accum.push(stripeItem)
-    return accum
-  }, [])
-
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    line_items: stripeCart,
-    mode: 'payment',
-    success_url: `http://google.com`,
-    cancel_url: `http://google.com`
-  })
-  console.log('******', session)
-  res.json({id: session.id})
 })

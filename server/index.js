@@ -24,7 +24,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY
 const stripePublicKey = process.env.STRIPE_PUBLIC_KEY
-
+console.log('~~~~', stripeSecretKey)
 /**
  * In your development environment, you can keep all of your
  * app's secret API keys in a file called `secrets.js`, in your project

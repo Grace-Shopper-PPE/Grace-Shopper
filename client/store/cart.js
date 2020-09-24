@@ -69,38 +69,6 @@ export const deleteItem = id => async dispatch => {
   }
 }
 
-// place order
-const PLACE_ORDER = 'PLACE_ORDER'
-const ordered = orderId => ({
-  type: PLACE_ORDER,
-  orderId
-})
-
-export const checkoutCart = cart => async dispatch => {
-  try {
-    const {data} = await axios.put('/api/order', cart)
-    dispatch(ordered(data.id))
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-// place order with stripe
-const NEW_STRIPE_SESSION = 'NEW_STRIPE_SESSION'
-const openStripe = sessionId => ({
-  type: NEW_STRIPE_SESSION,
-  sessionId
-})
-
-export const stripeCheckout = cart => async dispatch => {
-  try {
-    const {data} = await axios.post('/api/order/checkout-session', {cart})
-    dispatch(openStripe(data))
-  } catch (error) {
-    console.error(error)
-  }
-}
-
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_CART:
@@ -129,10 +97,6 @@ export default function(state = initialState, action) {
       )
       return newState
     }
-    case PLACE_ORDER:
-      return initialState
-    case NEW_STRIPE_SESSION:
-      return action.sessionId
     default:
       return state
   }
